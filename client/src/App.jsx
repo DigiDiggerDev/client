@@ -21,7 +21,7 @@ function App() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <div>
       <Counter />
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -41,7 +41,7 @@ function App() {
       </TabContext>
 
       <StartButton />
-    </Box>
+    </div>
   )
 }
 

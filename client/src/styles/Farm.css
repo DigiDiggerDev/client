@@ -1,14 +1,14 @@
-.card {
+/* .card {
    width: 20vh;
    height: 30vh;
-   background: green;
+   background: blue;
    cursor: pointer;
 }
 
 .selected-card {
    width: 20vh;
    height: 30vh;
-   background: green;
+   background: blue;
 
    display: flex;
    flex-direction: column;
@@ -27,4 +27,4 @@
    width: 10vh;
    height: 5vh;
    cursor: pointer
-}
+} */

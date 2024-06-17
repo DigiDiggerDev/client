@@ -9,6 +9,9 @@ const items = [
    { id: 1, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
    { id: 2, title: 'Название видеокарты 2', description: 'Описание видеокарты 2', image: '/static/images/cards/contemplative-reptile.jpg' },
    { id: 3, title: 'Название видеокарты 3', description: 'Описание видеокарты 3', image: '/static/images/cards/contemplative-reptile.jpg' },
+   { id: 4, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
+   { id: 5, title: 'Название видеокарты 2', description: 'Описание видеокарты 2', image: '/static/images/cards/contemplative-reptile.jpg' },
+   { id: 6, title: 'Название видеокарты 3', description: 'Описание видеокарты 3', image: '/static/images/cards/contemplative-reptile.jpg' },
 ];
 
 const Market = () => {
@@ -19,7 +22,7 @@ const Market = () => {
    };
 
    return (
-      <div>
+      <div className='market'>
          {items.map((item) => (
             <motion.div className='card' layoutId={item.id} onClick={() => setSelectedItem(item)} key={item.id}>
                <motion.h2>{item.title}</motion.h2>
@@ -34,8 +37,8 @@ const Market = () => {
                      layoutId={selectedItem.id}
                      style={{
                         position: 'fixed',
-                        top: '25%',
-                        left: '25%',
+                        top: '10%',
+                        left: '10%',
                         width: '50%',
                         height: '50%',
                         display: 'flex',

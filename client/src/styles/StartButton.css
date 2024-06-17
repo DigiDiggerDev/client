@@ -1,12 +1,14 @@
 .start-button {
-   background-color: #4CAF50;
+   margin: auto;
+   position: sticky;
+   width: 85%;
+   bottom: 20px;
+   background-color: #325333;
    border: none;
    color: white;
-   padding: 15px 32px;
+   padding: 5% 10%;
    text-align: center;
-   text-decoration: none;
-   display: inline-block;
+   display: block;
    font-size: 16px;
-   margin: 4px 2px;
    cursor: pointer;
 }
