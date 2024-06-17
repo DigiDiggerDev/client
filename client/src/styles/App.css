@@ -1,3 +1,15 @@
+.global-tabs {
+   margin: auto;
+   position: sticky;
+   width: 100%;
+   top: 20px;
+   border: none;
+   text-align: center;
+   display: block;
+   font-size: 16px;
+   cursor: pointer;
+}
+
 .close-button {
    top: 10px;
    right: 10px;
