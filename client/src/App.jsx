@@ -11,6 +11,7 @@ import './styles/App.css'
 import Market from './pages/Market';
 import Farm from './pages/Farm';
 import Counter from './components/Counter';
+import StartButton from './components/StartButton';
 
 function App() {
   const [value, setValue] = React.useState('1');
@@ -30,16 +31,16 @@ function App() {
           </TabList>
         </Box>
 
-
         <TabPanel value="1">
           <Market />
         </TabPanel>
-
 
         <TabPanel value="2">
           <Farm />
         </TabPanel>
       </TabContext>
+
+      <StartButton />
     </Box>
   )
 }
