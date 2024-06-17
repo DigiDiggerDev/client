@@ -9,6 +9,8 @@ import TabPanel from '@mui/lab/TabPanel';
 import './styles/App.css'
 
 import Market from './pages/Market';
+import Farm from './pages/Farm';
+import Counter from './components/Counter';
 
 function App() {
   const [value, setValue] = React.useState('1');
@@ -19,6 +21,7 @@ function App() {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <Counter />
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange}>
@@ -34,7 +37,7 @@ function App() {
 
 
         <TabPanel value="2">
-          Test
+          <Farm />
         </TabPanel>
       </TabContext>
     </Box>
