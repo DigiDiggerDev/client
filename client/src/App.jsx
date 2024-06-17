@@ -1,23 +1,17 @@
 import React from 'react'
-import { useState } from 'react'
-
-import { motion, AnimatePresence } from "framer-motion"
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 
 import './styles/App.css'
 
+import Market from './pages/Market';
+
 function App() {
   const [value, setValue] = React.useState('1');
-
-  const [selectedId, setSelectedId] = useState(null)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -35,43 +29,13 @@ function App() {
 
 
         <TabPanel value="1">
-          <motion.div layoutId={1} onClick={() => setSelectedId(1)}>
-            <Card sx={{ maxWidth: 345 }}>
-              <CardMedia
-                component="img"
-                alt="Видеокарта"
-                height="140"
-                image="/static/images/cards/contemplative-reptile.jpg"
-              />
-              <CardContent>
-                Название видеокарты
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <AnimatePresence>
-            {selectedId && (
-              <motion.div layoutId={selectedId}>
-                <Card sx={{ maxWidth: 345 }}>
-                  <CardMedia
-                    component="img"
-                    alt="Видеокарта"
-                    height="140"
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                  />
-                  <CardContent>
-                    <p>Название видеокарты</p>
-                    <p>Описание видеокарты</p>
-                  </CardContent>
-                </Card>
-                <motion.button onClick={() => setSelectedId(null)} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <Market />
         </TabPanel>
 
 
-        <TabPanel value="2">Моя ферма</TabPanel>
+        <TabPanel value="2">
+          Test
+        </TabPanel>
       </TabContext>
     </Box>
   )
