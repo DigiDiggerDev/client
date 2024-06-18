@@ -1,12 +1,4 @@
 import React from 'react'
-
-// import Box from '@mui/material/Box';
-// import Tab from '@mui/material/Tab';
-// import TabContext from '@mui/lab/TabContext';
-// import TabList from '@mui/lab/TabList';
-// import TabPanel from '@mui/lab/TabPanel';
-// import { TabsApple } from '/src/mui-treasury/tabs-apple/TabsApple';
-
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 

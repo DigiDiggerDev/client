@@ -1,13 +1,22 @@
+.react-tabs__tab {
+   border: 1px solid black;
+   border-radius: 3px;
+}
+
+.react-tabs__tab--selected {
+   background: rgba(6, 6, 29, 0.453);
+}
+
 .global-tabs {
    margin: auto;
    position: sticky;
-   width: 100%;
    top: 20px;
    border: none;
    text-align: center;
    display: block;
    font-size: 16px;
    cursor: pointer;
+   background: rgb(159, 159, 177);
 }
 
 .close-button {
