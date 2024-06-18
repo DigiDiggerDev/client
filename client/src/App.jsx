@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useState, useEffect } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
@@ -8,8 +8,10 @@ import Market from './pages/Market';
 import Farm from './pages/Farm';
 import Counter from './components/Counter';
 import StartButton from './components/StartButton';
+import LoadLineChart from './components/LoadLineChart';
 
 function App() {
+
   return (
     <div>
       <Counter />
@@ -38,7 +40,7 @@ function App() {
         </TabPanel>
 
         <TabPanel>
-          <Farm />
+          <LoadLineChart />
         </TabPanel>
       </Tabs>
 

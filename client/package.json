@@ -19,7 +19,8 @@
     "react": "^18.2.0",
     "react-animated-counter": "^1.7.9",
     "react-dom": "^18.2.0",
-    "react-tabs": "^6.0.2"
+    "react-tabs": "^6.0.2",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
