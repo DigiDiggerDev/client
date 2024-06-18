@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 
 import '/src/styles/Market.css';
 
@@ -16,13 +17,20 @@ const items = [
 
 const Market = () => {
    const [selectedItem, setSelectedItem] = useState(null);
-
-   const buyItem = (itemId) => {
-      console.log('Куплен предмет с ID', itemId);
+   const buyItem = (selectedItem) => {
+      console.log('Куплен предмет с ID', selectedItem.id);
+      enqueueSnackbar(`Куплен предмет ${selectedItem.title}`, {
+         anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+         },
+         autoHideDuration: 1000
+      });
    };
 
    return (
       <div className='wrapper'>
+         <SnackbarProvider />
          <div className='market'>
             {items.map((item) => (
                <motion.div className='card' layoutId={item.id} onClick={() => setSelectedItem(item)} key={item.id}>
@@ -50,7 +58,7 @@ const Market = () => {
                         <motion.button className='close-button' onClick={() => setSelectedItem(null)} />
                         <motion.h2>{selectedItem.title}</motion.h2>
                         <motion.h5>{selectedItem.description}</motion.h5>
-                        <motion.button className='buy-button' onClick={() => buyItem(selectedItem.id)}>Купить</motion.button>
+                        <motion.button className='buy-button' onClick={() => buyItem(selectedItem)}>Купить</motion.button>
                      </motion.div>
                   </ClickAwayListener>
                )}
