@@ -30,7 +30,7 @@ const LoadLineChart = () => {
          });
 
          setData(newData);
-      }, 1600);
+      }, 2000);
 
       return () => clearInterval(interval);
    }, [data]);
@@ -40,9 +40,9 @@ const LoadLineChart = () => {
          <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <Legend />
-            <YAxis />
-            <Line type="monotone" name='Текущая нагрузка' dataKey="currentLoad" stroke="#8884d8" strokeWidth={3} />
-            <Line type="monotone" name='Допустимая нагрузка' dataKey="maxLoad" stroke="#82ca9d" strokeWidth={3} />
+            <YAxis tickCount={3}/>
+            <Line dot={false} type="monotone" name='Текущая нагрузка' dataKey="currentLoad" stroke="#8884d8" strokeWidth={3} />
+            <Line dot={false} type="monotone" name='Допустимая нагрузка' dataKey="maxLoad" stroke="#82ca9d" strokeWidth={3} />
          </LineChart>
       </ResponsiveContainer>
    );
