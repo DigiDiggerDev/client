@@ -56,7 +56,7 @@ const StartButton = () => {
             onClick={handleClick}
             className='start-button'
             animate={isClicked ? { y: -50 } : { y: 0 }}
-            transition={{ duration: 1, type: 'spring', mass: 1, stiffness: 40 }}
+            transition={{ type: 'spring', mass: 1, stiffness: 40 }}
             disabled={isClicked}
          >
             Начать
@@ -65,10 +65,10 @@ const StartButton = () => {
             {isClicked && (
                <motion.div
                   className='terminal'
-                  initial={{ opacity: 0, height: 0 }}
+                  initial={{ opacity: 0, height: 0, scale: 0.65 }}
                   animate={{ opacity: 1, scale: 0.99, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 1, type: 'spring', mass: 0.7, stiffness: 40 }}
+                  exit={{ opacity: 0, scale: 0.65, height: 70 }}
+                  transition={{ type: 'spring', mass: 0.7, stiffness: 40 }}
                >
                   <Terminal
                      height={140}
