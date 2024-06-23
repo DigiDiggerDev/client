@@ -14,7 +14,7 @@ import LoadLineChart from './components/LoadLineChart';
 
 function App() {
   return (
-    <div>
+    <div className='App'>
       <Counter />
 
       <Tabs>

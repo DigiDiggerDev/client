@@ -1,13 +1,19 @@
 import { React, useState, useEffect } from 'react';
-import { LineChart, Line, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, YAxis, Legend, ResponsiveContainer } from 'recharts';
+
+const load = 150;
+const maxLoad = 200;
 
 const LoadLineChart = () => {
    const initialData = [
-      { name: 'Точка 1', currentLoad: 150, maxLoad: 200 },
-      { name: 'Точка 2', currentLoad: 180, maxLoad: 200 },
-      { name: 'Точка 3', currentLoad: 170, maxLoad: 200 },
-      { name: 'Точка 4', currentLoad: 190, maxLoad: 200 },
-      { name: 'Точка 5', currentLoad: 160, maxLoad: 200 },
+      { currentLoad: load, maxLoad: maxLoad },
+      { currentLoad: load, maxLoad: maxLoad },
+      { currentLoad: load, maxLoad: maxLoad },
+      { currentLoad: load, maxLoad: maxLoad },
+      { currentLoad: load, maxLoad: maxLoad },
+      { currentLoad: load, maxLoad: maxLoad },
+      { currentLoad: load, maxLoad: maxLoad },
+      { currentLoad: load, maxLoad: maxLoad }
    ];
 
    const [data, setData] = useState(initialData);
@@ -38,10 +44,9 @@ const LoadLineChart = () => {
    return (
       <ResponsiveContainer width="100%" height={150}>
          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
             <Legend />
             <YAxis tickCount={3}/>
-            <Line dot={false} type="monotone" name='Текущая нагрузка' dataKey="currentLoad" stroke="#8884d8" strokeWidth={3} />
+            <Line dot={false} type="monotone" name={`Текущая нагрузка - ${load}W`} dataKey="currentLoad" stroke="#8884d8" strokeWidth={3} />
             <Line dot={false} type="monotone" name='Допустимая нагрузка' dataKey="maxLoad" stroke="#82ca9d" strokeWidth={3} />
          </LineChart>
       </ResponsiveContainer>

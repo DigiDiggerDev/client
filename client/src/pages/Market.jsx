@@ -34,7 +34,8 @@ const Market = () => {
          <div className='market'>
             {items.map((item) => (
                <motion.div className='card' layoutId={item.id} onClick={() => setSelectedItem(item)} key={item.id}>
-                  <motion.h2>{item.title}</motion.h2>
+                  <motion.img className='card-image' src={'src/images/image.png'} />
+                  <motion.h2 className='card-title'>{item.title}</motion.h2>
                </motion.div>
             ))}
 
@@ -56,8 +57,9 @@ const Market = () => {
                         }}
                      >
                         <motion.button className='close-button' onClick={() => setSelectedItem(null)} />
-                        <motion.h2>{selectedItem.title}</motion.h2>
-                        <motion.h5>{selectedItem.description}</motion.h5>
+                        <motion.img className='selected-card-image' src={'src/images/image.png'} />
+                        <motion.h2 className='selected-card-title'>{selectedItem.title}</motion.h2>
+                        <motion.h5 className='selected-card-description'>{selectedItem.description}</motion.h5>
                         <motion.button className='buy-button' onClick={() => buyItem(selectedItem)}>Купить</motion.button>
                      </motion.div>
                   </ClickAwayListener>
