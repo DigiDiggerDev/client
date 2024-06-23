@@ -1,6 +1,8 @@
 import { React, useState, useEffect } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import Terminal from 'react-animated-term'
+import 'react-animated-term/dist/react-animated-term.css'
 
 import './styles/App.css'
 
@@ -11,7 +13,6 @@ import StartButton from './components/StartButton';
 import LoadLineChart from './components/LoadLineChart';
 
 function App() {
-
   return (
     <div>
       <Counter />
@@ -34,7 +35,7 @@ function App() {
             </TabPanel>
 
             <TabPanel>
-              Блоки питания
+              Тест
             </TabPanel>
           </Tabs>
         </TabPanel>

@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts';
 
 const LoadLineChart = () => {
    const initialData = [
