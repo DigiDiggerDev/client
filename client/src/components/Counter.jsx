@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { AnimatedCounter } from 'react-animated-counter';
+import '/src/styles/Counter.css'
 
 const amount = 1000;
 const delta = 132;
@@ -16,7 +17,9 @@ const Counter = () => {
    }, []);
 
    return (
-      <AnimatedCounter value={counterValue} color="black" fontSize="40px" />
+      <div className='Counter'>
+         <AnimatedCounter value={counterValue} color="white" fontSize="40px" />
+      </div>
    );
 };
 

@@ -1,21 +1,11 @@
-import React, { useState } from 'react';
+import { React, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SnackbarProvider, enqueueSnackbar } from 'notistack'
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 import '/src/styles/Market.css';
 
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-
-const items = [
-   { id: 1, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
-   { id: 2, title: 'Название видеокарты 2', description: 'Описание видеокарты 2', image: '/static/images/cards/contemplative-reptile.jpg' },
-   { id: 3, title: 'Название видеокарты 3', description: 'Описание видеокарты 3', image: '/static/images/cards/contemplative-reptile.jpg' },
-   { id: 4, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
-   { id: 5, title: 'Название видеокарты 2', description: 'Описание видеокарты 2', image: '/static/images/cards/contemplative-reptile.jpg' },
-   { id: 6, title: 'Название видеокарты 3', description: 'Описание видеокарты 3', image: '/static/images/cards/contemplative-reptile.jpg' },
-];
-
-const Market = () => {
+const Market = ({ items }) => {
    const [selectedItem, setSelectedItem] = useState(null);
    const buyItem = (selectedItem) => {
       console.log('Куплен предмет с ID', selectedItem.id);
