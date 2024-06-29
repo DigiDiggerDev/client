@@ -41,6 +41,7 @@ const StartButton = () => {
    const handleClick = () => {
       if (!isClicked) {
          setIsClicked(true);
+
          console.log('Нажата кнопка "Начать"');
 
          setTimeout(() => {

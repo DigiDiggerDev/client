@@ -19,7 +19,7 @@ const LoadLineChart = () => {
    const [data, setData] = useState(initialData);
 
    useEffect(() => {
-      const generateRandomLoad = () => Math.floor(Math.random() * (200 - 140 + 1)) + 140;
+      const generateRandomLoad = () => Math.floor(Math.random() * (maxLoad - load)) + load;
 
       const interval = setInterval(() => {
          const newData = data.map((point, index) => {
