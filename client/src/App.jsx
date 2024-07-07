@@ -36,6 +36,7 @@ function App() {
         <TabList className='global-tabs'>
           <Tab>Market</Tab>
           <Tab>Home</Tab>
+          <Tab>Boost</Tab>
         </TabList>
 
         <TabPanel>
@@ -51,6 +52,10 @@ function App() {
 
             <TabPanel>
               <Market items={psu} />
+            </TabPanel>
+
+            <TabPanel>
+              Boost
             </TabPanel>
           </Tabs>
         </TabPanel>
