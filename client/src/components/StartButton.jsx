@@ -1,9 +1,10 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Terminal from 'react-animated-term';
 import 'react-animated-term/dist/react-animated-term.css';
 
 import '/src/styles/StartButton.css';
+import Counter from './Counter';
 
 const spinner = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 const termLines = [
@@ -37,17 +38,63 @@ const termLines = [
 
 const StartButton = () => {
    const [isClicked, setIsClicked] = useState(false);
+   const [isFinished, setIsFinished] = useState(false);
+   const [isAvailable, setIsAvailable] = useState(true);
+   const [clickTime, setClickTime] = useState(null);
+   const [buttonText, setButtonText] = useState('Начать');
 
    const handleClick = () => {
-      if (!isClicked) {
+      if (!isClicked && isAvailable) {
          setIsClicked(true);
+         setIsAvailable(false);
 
          console.log('Нажата кнопка "Начать"');
 
+         const now = new Date();
+         setClickTime(now);
+
+         setButtonText('Запуск...');
+
          setTimeout(() => {
             setIsClicked(false);
-            console.log('Кнопка "Начать" снова доступна');
+            setButtonText('Идёт добыча...');
          }, 6000);
+      }
+      else if (!isClicked && isFinished) {
+         const now = new Date();
+
+         setIsFinished(false);
+         setButtonText('Начать');
+         setIsAvailable(true);
+         setClickTime(now);
+      }
+   };
+
+   useEffect(() => {
+      const interval = setInterval(() => {
+         const now = new Date();
+         // console.log(`Прошло времени с момента нажатия кнопки: ${now - clickTime}`);
+
+         if (!isAvailable && clickTime && now - clickTime >= 10000) {
+            // setIsAvailable(true);
+            // setClickTime(now);
+            setIsFinished(true);
+            setButtonText('Собрать');
+         }
+      }, 1000);
+
+      return () => clearInterval(interval);
+   }, [clickTime, isAvailable]);
+
+   const getButtonColor = () => {
+      if (isAvailable) {
+         return '#D48665';
+      }
+      else if (isFinished) {
+         return '#6cbf6b';
+      }
+      else {
+         return '#493f3b';
       }
    };
 
@@ -56,11 +103,15 @@ const StartButton = () => {
          <motion.button
             onClick={handleClick}
             className='start-button'
-            animate={isClicked ? { y: -50 } : { y: 0 }}
+            animate={{
+               backgroundColor: getButtonColor(),
+               y: isClicked ? -50 : 0
+            }}
             transition={{ type: 'spring', mass: 1, stiffness: 40 }}
             disabled={isClicked}
          >
-            Начать
+            {buttonText}
+            {buttonText === 'Идёт добыча...' && <Counter /> || buttonText === 'Собрать'}
          </motion.button>
          <AnimatePresence>
             {isClicked && (

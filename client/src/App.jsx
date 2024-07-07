@@ -6,8 +6,8 @@ import './styles/App.css'
 
 import Market from './pages/Market';
 import Home from './pages/Home';
-import Counter from './components/Counter';
 import StartButton from './components/StartButton';
+import Balance from './components/Balance';
 
 const video_cards = [
   { id: 1, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
@@ -30,7 +30,7 @@ const psu = [
 function App() {
   return (
     <div className='App'>
-      <Counter />
+      <Balance />
 
       <Tabs>
         <TabList className='global-tabs'>
@@ -53,15 +53,15 @@ function App() {
             <TabPanel>
               <Market items={psu} />
             </TabPanel>
-
-            <TabPanel>
-              Boost
-            </TabPanel>
           </Tabs>
         </TabPanel>
 
         <TabPanel>
           <Home />
+        </TabPanel>
+
+        <TabPanel>
+          Boost
         </TabPanel>
       </Tabs>
 
