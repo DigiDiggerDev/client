@@ -1,4 +1,4 @@
-import { React } from 'react'
+import { React, useState } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import 'react-animated-term/dist/react-animated-term.css'
@@ -28,9 +28,16 @@ const psu = [
 ];
 
 function App() {
+  const [counterValue, setCounterValue] = useState(0);
+  const [balance, setBalance] = useState(1000);
+
+  const handleCollect = (collected) => {
+    setBalance(balance + collected);
+  };
+
   return (
     <div className='App'>
-      <Balance />
+      <Balance balance={balance} />
 
       <Tabs>
         <TabList className='global-tabs'>
@@ -65,7 +72,7 @@ function App() {
         </TabPanel>
       </Tabs>
 
-      <StartButton />
+      <StartButton counterValue={counterValue} setCounterValue={setCounterValue} onCollect={handleCollect} />
     </div>
   )
 }

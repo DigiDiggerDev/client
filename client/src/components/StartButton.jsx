@@ -36,13 +36,12 @@ const termLines = [
    }
 ]
 
-const StartButton = () => {
+const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
    const [isClicked, setIsClicked] = useState(false);
    const [isFinished, setIsFinished] = useState(false);
    const [isAvailable, setIsAvailable] = useState(true);
    const [clickTime, setClickTime] = useState(null);
    const [buttonText, setButtonText] = useState('Начать');
-   const [counterValue, setCounterValue] = useState(0);
    const delta = 0.17;
 
    const handleClick = () => {
@@ -65,7 +64,8 @@ const StartButton = () => {
       else if (!isClicked && isFinished) {
          const now = new Date();
 
-         console.log(counterValue)
+         onCollect(counterValue);
+         console.log(counterValue);
 
          setIsFinished(false);
          setButtonText('Начать');
