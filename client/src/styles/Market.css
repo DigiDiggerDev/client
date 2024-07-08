@@ -21,7 +21,8 @@
 
 .card {
    border-radius: 5%;
-   min-width: 100%;
+   width: 100%;
+   max-width: 220px;
    background: #272527;
    cursor: pointer;
 
