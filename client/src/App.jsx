@@ -8,6 +8,7 @@ import Market from './pages/Market';
 import Home from './pages/Home';
 import StartButton from './components/StartButton';
 import Balance from './components/Balance';
+import Boost from './pages/Boost';
 
 const video_cards = [
   { id: 1, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
@@ -68,7 +69,7 @@ function App() {
         </TabPanel>
 
         <TabPanel>
-          Boost
+          <Boost balance={balance} setBalance={setBalance} />
         </TabPanel>
       </Tabs>
 

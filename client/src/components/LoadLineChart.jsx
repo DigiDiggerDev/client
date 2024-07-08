@@ -1,6 +1,8 @@
 import { React, useState, useEffect } from 'react';
 import { LineChart, Line, YAxis, Legend, ResponsiveContainer } from 'recharts';
 
+import '/src/styles/LoadLineChart.css'
+
 const load = 150;
 const maxLoad = 200;
 

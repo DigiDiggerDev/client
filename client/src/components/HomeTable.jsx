@@ -35,7 +35,7 @@ const data = [
 const HomeTable = () => {
    return (
       <div className='HomeTable'>
-         <TableContainer sx={{ maxHeight: 300, border: '0.1px solid white', borderRadius: '8px' }}>
+         <TableContainer sx={{ maxHeight: 300, borderRadius: '8px' }}>
             <Table stickyHeader sx={{ width: '100%'}}>
                <TableHead>
                   <TableRow>
