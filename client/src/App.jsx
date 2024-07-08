@@ -10,6 +10,13 @@ import StartButton from './components/StartButton';
 import Balance from './components/Balance';
 import Boost from './pages/Boost';
 
+const tg = window.Telegram.WebApp;
+const tg_haptic = window.Telegram.WebApp.HapticFeedback;
+tg.backgroundColor='#000000';
+tg.headerColor='#000000';
+tg.isVerticalSwipesEnabled=false;
+tg.expand();
+
 const video_cards = [
   { id: 1, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
   { id: 2, title: 'Название видеокарты 2', description: 'Описание видеокарты 2', image: '/static/images/cards/contemplative-reptile.jpg' },
@@ -33,6 +40,7 @@ function App() {
   const [balance, setBalance] = useState(1000);
 
   const handleCollect = (collected) => {
+    tg_haptic.notificationOccurred('success');
     setBalance(balance + collected);
   };
 
@@ -42,16 +50,16 @@ function App() {
 
       <Tabs>
         <TabList className='global-tabs'>
-          <Tab>Market</Tab>
-          <Tab>Home</Tab>
-          <Tab>Boost</Tab>
+          <Tab onClick={() => tg_haptic.impactOccurred('soft')}>Market</Tab>
+          <Tab onClick={() => tg_haptic.impactOccurred('soft')}>Home</Tab>
+          <Tab onClick={() => tg_haptic.impactOccurred('soft')}>Boost</Tab>
         </TabList>
 
         <TabPanel>
           <Tabs>
             <TabList className='market-tabs'>
-              <Tab>Видеокарты</Tab>
-              <Tab>Блоки питания</Tab>
+              <Tab onClick={() => tg_haptic.impactOccurred('soft')}>Видеокарты</Tab>
+              <Tab onClick={() => tg_haptic.impactOccurred('soft')}>Блоки питания</Tab>
             </TabList>
 
             <TabPanel>

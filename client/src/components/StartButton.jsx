@@ -6,6 +6,8 @@ import 'react-animated-term/dist/react-animated-term.css';
 import '/src/styles/StartButton.css';
 import Counter from './Counter';
 
+const tg_haptic = window.Telegram.WebApp.HapticFeedback;
+
 const spinner = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 const termLines = [
    {
@@ -46,6 +48,7 @@ const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
 
    const handleClick = () => {
       if (!isClicked && isAvailable) {
+         tg_haptic.impactOccurred('medium');
          setIsClicked(true);
          setIsAvailable(false);
 
@@ -57,6 +60,7 @@ const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
          setButtonText('Запуск...');
 
          setTimeout(() => {
+            tg_haptic.impactOccurred('soft');
             setIsClicked(false);
             setButtonText('Идёт добыча...');
          }, 6000);

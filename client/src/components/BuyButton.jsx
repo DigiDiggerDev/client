@@ -4,8 +4,12 @@ import { enqueueSnackbar } from 'notistack';
 
 import '/src/styles/BuyButton.css';
 
+const tg_haptic = window.Telegram.WebApp.HapticFeedback;
+
 const BuyButton = ({ selectedItem }) => {
    const handleClick = () => {
+      tg_haptic.impactOccurred('light');
+
       console.log('Куплен предмет с ID', selectedItem.id);
       enqueueSnackbar(`Куплен предмет ${selectedItem.title}`, {
          anchorOrigin: {
