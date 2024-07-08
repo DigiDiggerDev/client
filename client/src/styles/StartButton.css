@@ -1,9 +1,15 @@
+.button-wrap {
+   position: fixed;
+   width: 100%;
+   bottom: 12%;
+}
+
 .start-button {
-   margin: auto;
-   position: sticky;
+   position: relative;
+   z-index: 100;
+   margin: 0 auto;
    width: 85%;
-   bottom: 20px;
-   background-color: #325333;
+   background-color: #D48665;
    border: none;
    color: white;
    padding: 5% 10%;
@@ -11,4 +17,25 @@
    display: block;
    font-size: 16px;
    cursor: pointer;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   white-space: nowrap;
+   overflow: hidden;
+}
+
+
+.Terminal-control-btn {
+   display: none;
+}
+
+.Terminal-header {
+   display: none;
+}
+
+.terminal {
+   max-width: 85%;
+   margin: -70px auto 0 auto;
+   z-index: -1;
 }

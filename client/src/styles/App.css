@@ -1,13 +1,69 @@
-.global-tabs {
-   margin: auto;
-   position: sticky;
+@font-face {
+   font-family: Actay;
+   src: url('fonts/Actay-Regular.otf');
+}
+@font-face {
+   font-family: Actay-Bold;
+   src: url('fonts/ActayWide-Bold.otf');
+}
+
+.App {
+   font-family: 'Actay';
+   background: #272527;
    width: 100%;
-   top: 20px;
+   height: 100%;
+   color: white;
+}
+
+.market-tabs {
+   width: 90%;
+   padding: 10px;
+   margin: 0 auto;
+   background: #272527;
+   border: #bcafa4 0.1px solid;
+   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+   border-radius: 15px;
+   position: sticky;
+   top: 2.5%;
+   z-index: 90;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.react-tabs__tab {
+   color: grey;
+   border-radius: 10px;
+   padding: 10px 20px;
+   transition: 0.2s;
+   margin-left: 10px;
+}
+
+.react-tabs__tab--selected {
+   color: white;
+   background: rgb(129, 129, 129);
+}
+
+.react-tabs__tab:focus:after {
+   content: '';
+   background: none;
+}
+
+.global-tabs {
+   font-family: 'Actay-Bold';
+   z-index: 100;
+   margin: auto;
+   position: fixed;
+   width: 100%;
+   bottom: 0;
    border: none;
    text-align: center;
    display: block;
    font-size: 16px;
    cursor: pointer;
+   background: #272527;
+   padding: 4% 0;
+   border-radius: 20px 20px 0 0;
 }
 
 .close-button {
