@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Terminal from 'react-animated-term';
 import 'react-animated-term/dist/react-animated-term.css';
+import { useTranslation } from 'react-i18next';
 
 import '/src/styles/StartButton.css';
 import Counter from './Counter';
@@ -11,12 +12,12 @@ const tg_haptic = window.Telegram.WebApp.HapticFeedback;
 const spinner = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 const termLines = [
    {
-      text: 'cd home/dev/Mining/KRB',
+      text: 'cd home/dev/Farming/KSP',
       cmd: true,
       delay: 5
    },
    {
-      text: './xmbit.bin',
+      text: './exmbit.bin',
       cmd: true,
       delay: 5
    },
@@ -39,11 +40,14 @@ const termLines = [
 ]
 
 const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
+   const { t } = useTranslation();
+
    const [isClicked, setIsClicked] = useState(false);
    const [isFinished, setIsFinished] = useState(false);
    const [isAvailable, setIsAvailable] = useState(true);
    const [clickTime, setClickTime] = useState(null);
-   const [buttonText, setButtonText] = useState('Начать');
+   const [buttonText, setButtonText] = useState(`${t('button_start_text')}`);
+
    const delta = 0.17;
 
    const handleClick = () => {
@@ -52,27 +56,24 @@ const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
          setIsClicked(true);
          setIsAvailable(false);
 
-         console.log('Нажата кнопка "Начать"');
-
          const now = new Date();
          setClickTime(now);
 
-         setButtonText('Запуск...');
+         setButtonText(`${t('button_launch_text')}`);
 
          setTimeout(() => {
             tg_haptic.impactOccurred('soft');
             setIsClicked(false);
-            setButtonText('Идёт добыча...');
+            setButtonText(`${t('button_farming_text')}`);
          }, 6000);
       }
       else if (!isClicked && isFinished) {
          const now = new Date();
 
          onCollect(counterValue);
-         console.log(counterValue);
 
          setIsFinished(false);
-         setButtonText('Начать');
+         setButtonText(`${t('button_start_text')}`);
          setIsAvailable(true);
          setClickTime(now);
          setCounterValue(0);
@@ -85,7 +86,7 @@ const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
             const now = new Date();
             if (now - clickTime >= 12000) {
                setIsFinished(true);
-               setButtonText(`Собрать ${counterValue.toFixed(2)}`);
+               setButtonText(`${t('button_collect_text')} ${counterValue.toFixed(2)}`);
                clearInterval(interval);
             }
             else if (now - clickTime >= 6200) {
@@ -122,7 +123,7 @@ const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
             disabled={isClicked}
          >
             {buttonText}
-            {buttonText === 'Идёт добыча...' && <Counter counterValue={counterValue} setCounterValue={setCounterValue} delta={delta} /> || buttonText === 'Собрать'}
+            {buttonText === t('button_farming_text') && <Counter counterValue={counterValue} setCounterValue={setCounterValue} delta={delta} /> || buttonText === t('button_collect_text')}
          </motion.button>
          <AnimatePresence>
             {isClicked && (

@@ -1,12 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { enqueueSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 import '/src/styles/BuyButton.css';
 
 const tg_haptic = window.Telegram.WebApp.HapticFeedback;
 
 const BuyButton = ({ selectedItem }) => {
+   const { t } = useTranslation();
+
    const handleClick = () => {
       tg_haptic.impactOccurred('light');
 
@@ -28,7 +31,7 @@ const BuyButton = ({ selectedItem }) => {
          onClick={handleClick}
          whileTap={{ scale: 0.9 }}
       >
-         Купить
+         {t('buy_button')}
       </motion.button>
    );
 };

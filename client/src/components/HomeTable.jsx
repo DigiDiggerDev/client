@@ -1,10 +1,12 @@
-import { React } from 'react';
+import { React, useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+
+import { useTranslation } from 'react-i18next';
 
 const tableCellStyles = {
    fontFamily: 'Actay',
@@ -31,16 +33,27 @@ const data = [
 ];
 
 const HomeTable = () => {
+   const [maxHeight, setMaxHeight] = useState(300);
+
+   useEffect(() => {
+      if (window.innerHeight < 700) {
+         setMaxHeight(200);
+      }
+      console.log(window.innerHeight);
+   }, []);
+
+   const { t } = useTranslation(); 
+
    return (
       <div className='HomeTable'>
-         <TableContainer sx={{ maxHeight: 300, borderRadius: '8px' }}>
-            <Table stickyHeader sx={{ width: '100%'}}>
+         <TableContainer sx={{ maxHeight: maxHeight, borderRadius: '8px' }}>
+            <Table stickyHeader sx={{ width: '100%' }}>
                <TableHead>
                   <TableRow>
-                     <TableCell sx={ tableCellStyles }>Name</TableCell>
-                     <TableCell sx={ tableCellStyles } align="right">Capacity</TableCell>
-                     <TableCell sx={ tableCellStyles } align="right">Amount</TableCell>
-                     <TableCell sx={ tableCellStyles } align="right">Total capacity</TableCell>
+                     <TableCell sx={tableCellStyles}>{t('table_name')}</TableCell>
+                     <TableCell sx={tableCellStyles} align="right">{t('table_capacity')}</TableCell>
+                     <TableCell sx={tableCellStyles} align="right">{t('table_amount')}</TableCell>
+                     <TableCell sx={tableCellStyles} align="right">{t('table_total_capacity')}</TableCell>
                   </TableRow>
                </TableHead>
                <TableBody>
@@ -49,10 +62,10 @@ const HomeTable = () => {
                         key={data.name}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                      >
-                        <TableCell sx={ tableContentCellStyles } component="th" scope="row">{data.name}</TableCell>
-                        <TableCell sx={ tableContentCellStyles } align="right">{data.capacity}</TableCell>
-                        <TableCell sx={ tableContentCellStyles } align="right">{data.amount}</TableCell>
-                        <TableCell sx={ tableContentCellStyles } align="right">{data.capacity * data.amount}</TableCell>
+                        <TableCell sx={tableContentCellStyles} component="th" scope="row">{data.name}</TableCell>
+                        <TableCell sx={tableContentCellStyles} align="right">{data.capacity}</TableCell>
+                        <TableCell sx={tableContentCellStyles} align="right">{data.amount}</TableCell>
+                        <TableCell sx={tableContentCellStyles} align="right">{data.capacity * data.amount}</TableCell>
                      </TableRow>
                   ))}
                </TableBody>

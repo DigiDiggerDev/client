@@ -4,6 +4,9 @@ import 'react-tabs/style/react-tabs.css';
 import 'react-animated-term/dist/react-animated-term.css'
 import './styles/App.css'
 
+import { useTranslation } from 'react-i18next';
+import i18n from './i18n';
+
 import Market from './pages/Market';
 import Home from './pages/Home';
 import StartButton from './components/StartButton';
@@ -37,41 +40,21 @@ const psu = [
 ];
 
 function App() {
-  const [counterValue, setCounterValue] = useState(0);
-  const [balance, setBalance] = useState(1000);
-
-  const [language, setLanguage] = useState('en');
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const userLang = window.Telegram.WebApp.initDataUnsafe.user.language_code;
       if (userLang === 'ru') {
-        setLanguage('ru');
+        i18n.changeLanguage('ru');
       } else {
-        setLanguage('en');
+        i18n.changeLanguage('en');
       }
-      console.log(userLang);
     }
   }, []);
 
-  const texts = {
-    en: {
-      rotate: "Welcome to our website!",
-      market: "Market",
-      home: "Home",
-      boost: "Boost",
-      video_cards: "Video cards",
-      psu: "PSU",
-    },
-    ru: {
-      rotate: "Переверните устройство",
-      market: "Маркет",
-      home: "Дом",
-      boost: "Буст",
-      video_cards: "Видеокарты",
-      psu: "Блоки питания",
-    }
-  };
+  const [counterValue, setCounterValue] = useState(0);
+  const [balance, setBalance] = useState(1000);
 
   const handleCollect = (collected) => {
     tg_haptic.notificationOccurred('success');
@@ -81,7 +64,7 @@ function App() {
   return (
     <div className='App'>
       <div className='app-block'>
-        <p>{texts[language].rotate}</p>
+        <p>{t('rotate')}</p>
         <img src="src/images/rotate.png" alt="" />
       </div>
       <div className='app-wrapper'>
@@ -89,16 +72,16 @@ function App() {
 
         <Tabs>
           <TabList className='global-tabs'>
-            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{texts[language].market}</Tab>
-            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{texts[language].home}</Tab>
-            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{texts[language].boost}</Tab>
+            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('market')}</Tab>
+            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('home')}</Tab>
+            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('boost')}</Tab>
           </TabList>
 
           <TabPanel>
             <Tabs>
               <TabList className='market-tabs'>
-                <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{texts[language].video_cards}</Tab>
-                <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{texts[language].psu}</Tab>
+                <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('video_cards')}</Tab>
+                <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('psu')}</Tab>
               </TabList>
 
               <TabPanel>
