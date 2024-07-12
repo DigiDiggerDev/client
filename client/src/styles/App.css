@@ -63,6 +63,7 @@
    display: flex;
    justify-content: center;
    align-items: center;
+   font-size: 110%;
 }
 
 .react-tabs__tab {
@@ -93,21 +94,20 @@
    border: none;
    text-align: center;
    display: block;
-   font-size: 16px;
+   font-size: 130%;
    cursor: pointer;
    background: #272527;
    padding: 4% 0 8% 0;
    border-radius: 20px 20px 0 0;
 }
-
+/* 
 .close-button {
    top: 10px;
    right: 10px;
-   background: red;
    cursor: pointer;
    width: 30px;
    height: 30px;
-}
+} */
 
 .card {
    width: 20vh;

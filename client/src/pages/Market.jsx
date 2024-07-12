@@ -37,7 +37,6 @@ const Market = ({ items }) => {
                            alignItems: 'center'
                         }}
                      >
-                        <motion.button className='close-button' onClick={() => setSelectedItem(null)} />
                         <motion.img className='selected-card-image' src={'src/images/image.png'} />
                         <motion.h2 className='selected-card-title'>{selectedItem.title}</motion.h2>
                         <motion.h5 className='selected-card-description'>{selectedItem.description}</motion.h5>

@@ -33,7 +33,7 @@ const data = [
 ];
 
 const HomeTable = () => {
-   const [maxHeight, setMaxHeight] = useState(300);
+   const [maxHeight, setMaxHeight] = useState(330);
 
    useEffect(() => {
       if (window.innerHeight < 700) {
