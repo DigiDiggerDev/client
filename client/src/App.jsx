@@ -15,11 +15,13 @@ import Boost from './pages/Boost';
 
 const tg = window.Telegram.WebApp;
 const tg_haptic = window.Telegram.WebApp.HapticFeedback;
+tg.isVerticalSwipesEnabled = false;
 
 tg.backgroundColor = '#000000';
 tg.headerColor = '#000000';
 tg.isVerticalSwipesEnabled = false;
 tg.expand();
+tg.ready();
 
 const video_cards = [
   { id: 1, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg' },
@@ -68,6 +70,7 @@ function App() {
         <img src="src/images/rotate.png" alt="" />
       </div>
       <div className='app-wrapper'>
+        <div className='debug'>Debug. TG API version {tg.version}</div>
         <Balance balance={balance} />
 
         <Tabs>

@@ -13,7 +13,7 @@ const BuyButton = ({ selectedItem }) => {
    const handleBadClick = () => {
       tg_haptic.notificationOccurred('warning');
 
-      enqueueSnackbar('Недостаточно средств', {
+      enqueueSnackbar(`${t('notification_notbuy')}`, {
          anchorOrigin: {
             vertical: 'top',
             horizontal: 'center'
@@ -27,7 +27,7 @@ const BuyButton = ({ selectedItem }) => {
       tg_haptic.impactOccurred('light');
 
       console.log('Куплен предмет с ID', selectedItem.id);
-      enqueueSnackbar(`Куплен предмет ${selectedItem.title}`, {
+      enqueueSnackbar(`${t('notification_buy')} ${selectedItem.title}`, {
          anchorOrigin: {
             vertical: 'top',
             horizontal: 'center'

@@ -32,6 +32,9 @@ i18n
                button_launch_text: "Launching...",
                button_farming_text: "Farming...",
                button_collect_text: "Collect",
+
+               notification_buy: "Purchased",
+               notification_notbuy: "Insufficient funds",
             }
          },
          ru: {
@@ -53,12 +56,15 @@ i18n
                table_total_capacity: "Общая добыча",
 
                current_load: "Нагрузка",
-               max_load: "Допустимая нагрузка",
+               max_load: "Макс. нагрузка",
 
                button_start_text: "Начать",
                button_launch_text: "Запуск...",
                button_farming_text: "Идёт добыча...",
                button_collect_text: "Собрать",
+
+               notification_buy: "Куплен предмет",
+               notification_notbuy: "Недостаточно средств",
             }
          },
       },
