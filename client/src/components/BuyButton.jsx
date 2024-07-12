@@ -10,6 +10,19 @@ const tg_haptic = window.Telegram.WebApp.HapticFeedback;
 const BuyButton = ({ selectedItem }) => {
    const { t } = useTranslation();
 
+   const handleBadClick = () => {
+      tg_haptic.notificationOccurred('warning');
+
+      enqueueSnackbar('Недостаточно средств', {
+         anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+         },
+         autoHideDuration: 1000,
+         variant: 'warning'
+      });
+   };
+
    const handleClick = () => {
       tg_haptic.impactOccurred('light');
 
@@ -21,8 +34,6 @@ const BuyButton = ({ selectedItem }) => {
          },
          autoHideDuration: 1000
       });
-
-      
    };
 
    return (
