@@ -107,7 +107,7 @@
    border-radius: 20px 20px 0 0;
 }
 
-@media (max-width: 650px) {
+@media (max-height: 650px) {
    .global-tabs {
       padding: 1% 0 2% 0;
    }

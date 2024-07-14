@@ -23,7 +23,7 @@ const tableContentCellStyles = {
 };
 
 const HomeTable = ({ data }) => {
-   const [maxHeight, setMaxHeight] = useState(310);
+   const [maxHeight, setMaxHeight] = useState(330);
 
    useEffect(() => {
       if (window.innerHeight < 650) {
