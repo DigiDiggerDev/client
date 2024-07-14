@@ -46,7 +46,7 @@ function App() {
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
-      const userLang = window.Telegram.WebApp.initDataUnsafe.user.language_code;
+      const userLang = window.Telegram.WebApp.initDataUnsafe?.user?.language_code;
       if (userLang === 'ru') {
         i18n.changeLanguage('ru');
       } else {
@@ -70,14 +70,14 @@ function App() {
         <img src="src/images/rotate.png" alt="" />
       </div>
       <div className='app-wrapper'>
-        <div className='debug'>Debug. TG API version {tg.version}</div>
+        <div className='debug'>DEBUG. API version: {tg.version}. Height: {tg.viewportHeight}</div>
         <Balance balance={balance} />
 
         <Tabs>
           <TabList className='global-tabs'>
-            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('market')}</Tab>
-            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('home')}</Tab>
-            <Tab onClick={() => tg_haptic.impactOccurred('soft')}>{t('boost')}</Tab>
+            <Tab className={'global-tab global-tab-market react-tabs__tab'} onClick={() => tg_haptic.impactOccurred('soft')}>{t('market')}</Tab>
+            <Tab className={'global-tab global-tab-home react-tabs__tab'} onClick={() => tg_haptic.impactOccurred('soft')}>{t('home')}</Tab>
+            <Tab className={'global-tab global-tab-boost react-tabs__tab'} onClick={() => tg_haptic.impactOccurred('soft')}>{t('boost')}</Tab>
           </TabList>
 
           <TabPanel>

@@ -7,8 +7,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { useTranslation } from 'react-i18next';
+import { padding } from '@mui/system';
 
 const tableCellStyles = {
+   padding: 1,
    fontFamily: 'Actay',
    backgroundColor: 'black',
    color: 'white',
@@ -20,23 +22,11 @@ const tableContentCellStyles = {
    color: 'white'
 };
 
-const data = [
-   { name: 'GTX 1070 TI', capacity: 0.1, amount: 10 },
-   { name: 'GTX 1071 TI', capacity: 0.1, amount: 20 },
-   { name: 'GTX 1072 TI', capacity: 0.1, amount: 30 },
-   { name: 'GTX 1073 TI', capacity: 0.1, amount: 100 },
-   { name: 'GTX 1074 TI', capacity: 0.1, amount: 100 },
-   { name: 'GTX 1075 TI', capacity: 0.1, amount: 100 },
-   { name: 'GTX 1076 TI', capacity: 0.1, amount: 100 },
-   { name: 'GTX 1077 TI', capacity: 0.1, amount: 100 },
-   { name: 'GTX 1078 TI', capacity: 0.1, amount: 100 },
-];
-
-const HomeTable = () => {
-   const [maxHeight, setMaxHeight] = useState(330);
+const HomeTable = ({ data }) => {
+   const [maxHeight, setMaxHeight] = useState(310);
 
    useEffect(() => {
-      if (window.innerHeight < 700) {
+      if (window.innerHeight < 650) {
          setMaxHeight(200);
       }
       console.log(window.innerHeight);
@@ -46,7 +36,7 @@ const HomeTable = () => {
 
    return (
       <div className='HomeTable'>
-         <TableContainer sx={{ maxHeight: maxHeight, borderRadius: '8px' }}>
+         <TableContainer sx={{ maxHeight: maxHeight }}>
             <Table stickyHeader sx={{ width: '100%' }}>
                <TableHead>
                   <TableRow>

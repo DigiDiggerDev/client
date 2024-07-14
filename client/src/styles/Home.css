@@ -1,3 +1,11 @@
-.HomeTable {
-   margin-top: 5px;
+.home-tabs {
+   font-size: 90%;
+   overflow: hidden;
+   padding: 2px 0;
+   border-top: 3px black solid;
+   border-radius: 12px 12px 0 0;
+   background-color: black;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }

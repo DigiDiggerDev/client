@@ -103,9 +103,54 @@
    font-size: 130%;
    cursor: pointer;
    background: #272527;
-   padding: 4% 0 8% 0;
+   padding: 3% 0 4% 0;
    border-radius: 20px 20px 0 0;
 }
+
+@media (max-width: 650px) {
+   .global-tabs {
+      padding: 1% 0 2% 0;
+   }
+}
+
+.global-tab {
+   position: relative;
+   padding-top: 30px;
+}
+
+.global-tab-market::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 27%;
+   width: 50%;
+   height: 50%;
+   background: url('../images/icons/market.png') no-repeat center;
+   background-size: contain;
+}
+
+.global-tab-home::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 27%;
+   width: 50%;
+   height: 50%;
+   background: url('../images/icons/home.png') no-repeat center;
+   background-size: contain;
+}
+
+.global-tab-boost::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 27%;
+   width: 50%;
+   height: 50%;
+   background: url('../images/icons/boost.png') no-repeat center;
+   background-size: contain;
+}
+
 /* 
 .close-button {
    top: 10px;

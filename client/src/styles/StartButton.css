@@ -1,7 +1,7 @@
 .button-wrap {
    position: fixed;
    width: 100%;
-   bottom: 15%;
+   bottom: 12%;
 }
 
 .start-button {
@@ -12,7 +12,7 @@
    background-color: #D48665;
    border: none;
    color: white;
-   padding: 5% 10%;
+   padding: 5%;
    text-align: center;
    display: block;
    font-size: 130%;
@@ -25,6 +25,16 @@
    overflow: hidden;
 }
 
+@media (max-width: 650px) {
+   .button-wrap {
+      bottom: 13%;
+   }
+
+   .start-button {
+      font-size: 110%;
+      padding: 4%;
+   }
+}
 
 .Terminal-control-btn {
    display: none;
