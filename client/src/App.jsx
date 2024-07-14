@@ -48,7 +48,7 @@ function App() {
     if (window.Telegram && window.Telegram.WebApp) {
       const userLang = window.Telegram.WebApp.initDataUnsafe?.user?.language_code;
       if (userLang === 'ru') {
-        i18n.changeLanguage('en');
+        i18n.changeLanguage('ru');
       } else {
         i18n.changeLanguage('en');
       }
