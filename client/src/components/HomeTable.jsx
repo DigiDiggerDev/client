@@ -7,7 +7,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { useTranslation } from 'react-i18next';
-import { padding } from '@mui/system';
 
 const tableCellStyles = {
    padding: 1,
@@ -23,7 +22,7 @@ const tableContentCellStyles = {
 };
 
 const HomeTable = ({ data }) => {
-   const [maxHeight, setMaxHeight] = useState(330);
+   const [maxHeight, setMaxHeight] = useState(270);
 
    useEffect(() => {
       if (window.innerHeight < 650) {

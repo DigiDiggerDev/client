@@ -1,11 +1,13 @@
 import { React, useState, useEffect } from 'react'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+import axios from 'axios'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import 'react-tabs/style/react-tabs.css'
 import 'react-animated-term/dist/react-animated-term.css'
 import './styles/App.css'
 
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
+import { io } from "socket.io-client";
 
 import Market from './pages/Market';
 import Home from './pages/Home';
@@ -56,11 +58,49 @@ function App() {
   }, []);
 
   const [counterValue, setCounterValue] = useState(0);
-  const [balance, setBalance] = useState(1000);
+  const [balance, setBalance] = useState(0);
+  const socket = io('http://127.0.0.1:8000');
+
+  socket.on('connect', function() {
+    console.log('Соединение установлено');
+  });
+
+  socket.on('disconnect', function() {
+    console.log('Соединение закрыто');
+  });
+  
+  socket.on('error', function(error) {
+    console.log(`Ошибка: ${error}`);
+  });
+
+  useEffect(() => {
+    const userId = 1;
+    const getWallet = async () => {
+      try {
+        const response = await axios.get(`https://ymp1tc-109-252-37-67.ru.tuna.am/users/wallet/${userId}`);
+        setBalance(response.data.wallet);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    getWallet();
+  }, []);
+
+  const addUserWallet = async (userId, amount) => {
+    try {
+      const response = await axios.post(`https://ymp1tc-109-252-37-67.ru.tuna.am/users/wallet/${userId}?amount=${amount}`);
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const handleCollect = (collected) => {
     tg_haptic.notificationOccurred('success');
     setBalance(balance + collected);
+
+    const userId = 1;
+    addUserWallet(userId, collected);
   };
 
   return (
