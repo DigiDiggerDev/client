@@ -61,46 +61,31 @@ function App() {
   const [balance, setBalance] = useState(0);
   const socket = io('http://127.0.0.1:8000');
 
-  socket.on('connect', function() {
-    console.log('Соединение установлено');
-  });
-
-  socket.on('disconnect', function() {
-    console.log('Соединение закрыто');
-  });
-  
-  socket.on('error', function(error) {
-    console.log(`Ошибка: ${error}`);
-  });
-
   useEffect(() => {
     const userId = 1;
-    const getWallet = async () => {
-      try {
-        const response = await axios.get(`https://ymp1tc-109-252-37-67.ru.tuna.am/users/wallet/${userId}`);
-        setBalance(response.data.wallet);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-    getWallet();
-  }, []);
 
-  const addUserWallet = async (userId, amount) => {
-    try {
-      const response = await axios.post(`https://ymp1tc-109-252-37-67.ru.tuna.am/users/wallet/${userId}?amount=${amount}`);
-      console.log('Response:', response.data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    socket.emit('get_wallet', { userId });
+
+    socket.on('wallet_balance', (data) => {
+      setBalance(data.wallet);
+    });
+
+    socket.on('error', (error) => {
+      console.error('Socket error:', error);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
 
   const handleCollect = (collected) => {
     tg_haptic.notificationOccurred('success');
     setBalance(balance + collected);
 
     const userId = 1;
-    addUserWallet(userId, collected);
+
+    socket.emit('add_wallet', { userId, amount: collected });
   };
 
   return (
