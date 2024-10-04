@@ -41,6 +41,7 @@ const termLines = [
 
 const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) => {
    const { t } = useTranslation();
+   const socket = socketRef.current;
 
    const [isClicked, setIsClicked] = useState(false);
    const [isFinished, setIsFinished] = useState(false);
@@ -49,8 +50,6 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
    const [buttonText, setButtonText] = useState(`${t('button_start_text')}`);
 
    const delta = 0.17;
-
-   const socket = socketRef.current;
 
    const handleClick = () => {
       if (!isClicked && isAvailable) {
@@ -83,25 +82,37 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
    };
 
    useEffect(() => {
-      if (!isAvailable && clickTime) {
-         const interval = setInterval(() => {
-            // socket.emit('mining_balance', (data) => {
-            //    setBalance(data.wallet);
-            // });
-            const now = new Date();
-            if (now - clickTime >= 12000) {
-               setIsFinished(true);
-               setButtonText(`${t('button_collect_text')} ${counterValue.toFixed(2)}`);
-               clearInterval(interval);
-            }
-            else if (now - clickTime >= 6200) {
-               setCounterValue(prevValue => prevValue + delta);
-            }
-         }, 1000);
+      const userId = 1;
 
-         return () => clearInterval(interval);
+      if (socket) {
+         socket.on('mining_balance', (data) => {
+            console.log(data);
+            setCounterValue(data.mining_balance);
+         });
+
+         if (!isAvailable && clickTime) {
+            const interval = setInterval(() => {
+               socket.emit('mining', { userId });
+               const now = new Date();
+               if (now - clickTime >= 12000) {
+                  setIsFinished(true);
+                  setButtonText(`${t('button_collect_text')} ${counterValue.toFixed(2)}`);
+                  clearInterval(interval);
+               }
+            }, 1000);
+
+            return () => clearInterval(interval);
+         }
       }
-   }, [clickTime, isAvailable, counterValue]);
+
+      // Очистка при размонтировании компонента
+      return () => {
+         if (socket) {
+            socket.off('mining_balance');
+         }
+      };
+   }, [clickTime, isAvailable, counterValue, socket]);  // Добавьте socket в зависимости
+
 
    const getButtonColor = () => {
       if (isAvailable) {

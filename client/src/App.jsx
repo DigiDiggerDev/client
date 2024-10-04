@@ -60,33 +60,37 @@ function App() {
   const [counterValue, setCounterValue] = useState(0);
   const [balance, setBalance] = useState(0);
 
-  const socketRef = useRef();
+  const socketRef = useRef(null);
 
   useEffect(() => {
     // const socket = io('http://127.0.0.1:8000');
-    socketRef.current = io('https://0iq3rz-109-252-37-67.ru.tuna.am', {
+    socketRef.current = io('https://8v1cxo-109-252-37-67.ru.tuna.am', {
       transports: ['websocket']
     });
 
     const socket = socketRef.current;
     const userId = 1;
 
-    socket.emit('get_wallet', { userId });
+    if (socket) {
+      socket.emit('get_wallet', { userId });
 
-    socket.on('wallet_balance', (data) => {
-      setBalance(data.wallet);
-    });
+      socket.on('wallet_balance', (data) => {
+        setBalance(data.wallet);
+      });
 
-    socket.on('error', (error) => {
-      console.error('Socket error:', error);
-    });
+      socket.on('error', (error) => {
+        console.error('Socket error:', error);
+      });
+    }
 
     return () => {
-      socket.disconnect();
+      if (socket) {
+        socket.disconnect();
+      }
     };
   }, []);
 
-  const handleCollect = (collected) => {    
+  const handleCollect = (collected) => {
     tg_haptic.notificationOccurred('success');
     setBalance(balance + collected);
 
