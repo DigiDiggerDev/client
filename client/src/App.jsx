@@ -1,5 +1,5 @@
-import { React, useState, useEffect } from 'react'
-import axios from 'axios'
+import { React, useState, useEffect, useRef } from 'react'
+// import axios from 'axios'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
 import 'react-animated-term/dist/react-animated-term.css'
@@ -59,9 +59,16 @@ function App() {
 
   const [counterValue, setCounterValue] = useState(0);
   const [balance, setBalance] = useState(0);
-  const socket = io('http://127.0.0.1:8000');
+
+  const socketRef = useRef();
 
   useEffect(() => {
+    // const socket = io('http://127.0.0.1:8000');
+    socketRef.current = io('https://0iq3rz-109-252-37-67.ru.tuna.am', {
+      transports: ['websocket']
+    });
+
+    const socket = socketRef.current;
     const userId = 1;
 
     socket.emit('get_wallet', { userId });
@@ -77,11 +84,13 @@ function App() {
     return () => {
       socket.disconnect();
     };
-  }, [socket]);
+  }, []);
 
-  const handleCollect = (collected) => {
+  const handleCollect = (collected) => {    
     tg_haptic.notificationOccurred('success');
     setBalance(balance + collected);
+
+    const socket = socketRef.current;
 
     const userId = 1;
 
@@ -113,11 +122,11 @@ function App() {
               </TabList>
 
               <TabPanel>
-                <Market items={video_cards} />
+                <Market items={video_cards} socketRef={socketRef} />
               </TabPanel>
 
               <TabPanel>
-                <Market items={psu} />
+                <Market items={psu} socketRef={socketRef} />
               </TabPanel>
             </Tabs>
           </TabPanel>
@@ -127,11 +136,11 @@ function App() {
           </TabPanel>
 
           <TabPanel>
-            <Boost balance={balance} setBalance={setBalance} />
+            <Boost balance={balance} setBalance={setBalance} socketRef={socketRef} />
           </TabPanel>
         </Tabs>
 
-        <StartButton counterValue={counterValue} setCounterValue={setCounterValue} onCollect={handleCollect} />
+        <StartButton counterValue={counterValue} setCounterValue={setCounterValue} onCollect={handleCollect} socketRef={socketRef} />
       </div>
     </div>
   )

@@ -1,19 +1,17 @@
 import { React } from 'react';
-import axios from 'axios';
-import { io } from 'socket.io-client';
 
 import '/src/styles/Boost.css';
 
 const tg_haptic = window.Telegram.WebApp.HapticFeedback;
 
-const Boost = ({ balance, setBalance }) => {
+const Boost = ({ balance, setBalance, socketRef }) => {
    const collected = 0.01;
-
-   const socket = io('http://127.0.0.1:8000');
 
    const handleClick = () => {
       tg_haptic.impactOccurred('medium');
       setBalance(balance + collected);
+
+      const socket = socketRef.current;
 
       const userId = 1;
       

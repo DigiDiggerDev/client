@@ -7,10 +7,10 @@ import '/src/styles/BuyButton.css';
 
 const tg_haptic = window.Telegram.WebApp.HapticFeedback;
 
-const BuyButton = ({ selectedItem }) => {
+const BuyButton = ({ selectedItem, socketRef }) => {
    const { t } = useTranslation();
 
-   const handleBadClick = () => {
+   const badPayment = () => {
       tg_haptic.notificationOccurred('warning');
 
       enqueueSnackbar(`${t('notification_notbuy')}`, {
@@ -23,8 +23,10 @@ const BuyButton = ({ selectedItem }) => {
       });
    };
 
-   const handleClick = () => {
+   const goodPayment = ({ selectedItem, userId, cost }) => {
       tg_haptic.impactOccurred('light');
+
+      socket.emit('remove_wallet', { userId, amount: cost });
 
       console.log('Куплен предмет с ID', selectedItem.id);
       enqueueSnackbar(`${t('notification_buy')} ${selectedItem.title}`, {
@@ -36,9 +38,31 @@ const BuyButton = ({ selectedItem }) => {
       });
    };
 
+   const handleClick = () => {
+      var balance = 0;
+
+      const userId = 1;
+      const cost = 5;
+      
+      const socket = socketRef.current;
+
+      socket.emit('get_wallet', { userId });
+
+      socket.on('wallet_balance', (data) => {
+         balance = data.wallet;
+      });
+
+      if (balance < cost) {
+         badPayment();
+      }
+      else {
+         goodPayment( selectedItem, userId, cost );
+      }
+   };
+
    return (
-      <motion.button 
-         className='BuyButton' 
+      <motion.button
+         className='BuyButton'
          onClick={handleClick}
          whileTap={{ scale: 0.9 }}
       >

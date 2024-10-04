@@ -39,7 +39,7 @@ const termLines = [
    }
 ]
 
-const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
+const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) => {
    const { t } = useTranslation();
 
    const [isClicked, setIsClicked] = useState(false);
@@ -49,6 +49,8 @@ const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
    const [buttonText, setButtonText] = useState(`${t('button_start_text')}`);
 
    const delta = 0.17;
+
+   const socket = socketRef.current;
 
    const handleClick = () => {
       if (!isClicked && isAvailable) {
@@ -83,6 +85,9 @@ const StartButton = ({ counterValue, setCounterValue, onCollect }) => {
    useEffect(() => {
       if (!isAvailable && clickTime) {
          const interval = setInterval(() => {
+            // socket.emit('mining_balance', (data) => {
+            //    setBalance(data.wallet);
+            // });
             const now = new Date();
             if (now - clickTime >= 12000) {
                setIsFinished(true);
