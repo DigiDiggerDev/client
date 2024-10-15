@@ -9,157 +9,131 @@ import Counter from './Counter';
 
 const tg_haptic = window.Telegram.WebApp.HapticFeedback;
 
-const spinner = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+const spinner = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 const termLines = [
-   {
-      text: 'cd home/dev/Farming/KSP',
-      cmd: true,
-      delay: 5
-   },
-   {
-      text: './exmbit.bin',
-      cmd: true,
-      delay: 5
-   },
-   {
-      text: '✔ Loaded job',
-      cmd: false,
-      repeat: true,
-      repeatCount: 5,
-      frames: spinner.map(function (spinner) {
-         return {
-            text: spinner + ' Loading job',
-            delay: 20
-         }
-      })
-   },
-   {
-      text: 'Work in progress...',
-      cmd: false
-   }
-]
+  { text: 'cd home/dev/Farming/KSP', cmd: true, delay: 5 },
+  { text: './exmbit.bin', cmd: true, delay: 5 },
+  {
+    text: '✔ Loaded job',
+    cmd: false,
+    repeat: true,
+    repeatCount: 5,
+    frames: spinner.map((spin) => ({
+      text: `${spin} Loading job`,
+      delay: 20,
+    })),
+  },
+  { text: 'Work in progress...', cmd: false },
+];
 
 const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) => {
-   const { t } = useTranslation();
-   const socket = socketRef.current;
+  const { t } = useTranslation();
+  const socket = socketRef.current;
 
-   const [isClicked, setIsClicked] = useState(false);
-   const [isFinished, setIsFinished] = useState(false);
-   const [isAvailable, setIsAvailable] = useState(true);
-   const [clickTime, setClickTime] = useState(null);
-   const [buttonText, setButtonText] = useState(`${t('button_start_text')}`);
+  const [isAnimation, setIsAnimation] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
+  const [buttonText, setButtonText] = useState(t('button_start_text'));
 
-   const delta = 0.17;
+  const userId = 1;
 
-   const handleClick = () => {
-      if (!isClicked && isAvailable) {
-         tg_haptic.impactOccurred('medium');
-         setIsClicked(true);
-         setIsAvailable(false);
+  // useEffect(() => {
+  //   if (socket) {
+  //     console.log('Получение состояния кнопки')
 
-         const now = new Date();
-         setClickTime(now);
+  //     socket.emit('get_start_button', { userId });
+  //     socket.on('mining_balance', (data) => {
+  //       setCounterValue(data.mining_balance);
 
-         setButtonText(`${t('button_launch_text')}`);
+  //       if (data.status === 'in_process') {
+  //         setIsAvailable(false);
+  //         setButtonText(t('button_farming_text'));
+  //         inFarming();
+  //       } else if (data.status === 'finished') {
+  //         setIsFinished(true);
+  //         setIsAvailable(false);
+  //       }
+  //     });
+  //   }
+  // }, [socket]);
 
-         setTimeout(() => {
-            tg_haptic.impactOccurred('soft');
-            setIsClicked(false);
-            setButtonText(`${t('button_farming_text')}`);
-         }, 6000);
-      }
-      else if (!isClicked && isFinished) {
-         const now = new Date();
+  // в процессе работы
+  useEffect(() => {
+    if (!isAvailable && isAnimation) {
+      const interval = setInterval(() => {
+        socket.on('mining_balance', (data) => {
+          setCounterValue(data.mining_balance);
+          if (data.status === 'finished') {
+            setIsFinished(true);
+            setButtonText(`${t('button_collect_text')} ${data.mining_balance.toFixed(2)}`);
+            clearInterval(interval);
+          }
+        });
+      }, 1000);
 
-         onCollect(counterValue);
+      return () => clearInterval(interval);
+    }
+  }, [isAvailable, isAnimation, setCounterValue]);
 
-         setIsFinished(false);
-         setButtonText(`${t('button_start_text')}`);
-         setIsAvailable(true);
-         setClickTime(now);
-         setCounterValue(0);
-      }
-   };
+  // для запуска или сбора 
+  const handleClick = () => {
+    if (isAvailable && !isAnimation) {
+      socket.emit('mining', { userId });
+      tg_haptic.impactOccurred('medium');
 
-   useEffect(() => {
-      const userId = 1;
+      setIsAnimation(true);
+      setIsAvailable(false);
+      setButtonText(t('button_launch_text'));
 
-      if (socket) {
-         socket.on('mining_balance', (data) => {
-            console.log(data);
-            setCounterValue(data.mining_balance);
-         });
+      setTimeout(() => {
+        tg_haptic.impactOccurred('soft');
+        setIsAnimation(false);
+        setButtonText(t('button_farming_text'));
+      }, 6000);
+    } else if (isFinished) {
+      onCollect(counterValue);
+      setIsFinished(false);
+      setButtonText(t('button_start_text'));
+      setIsAvailable(true);
+      setCounterValue(0);
+    }
+  };
 
-         if (!isAvailable && clickTime) {
-            const interval = setInterval(() => {
-               socket.emit('mining', { userId });
-               const now = new Date();
-               if (now - clickTime >= 12000) {
-                  setIsFinished(true);
-                  setButtonText(`${t('button_collect_text')} ${counterValue.toFixed(2)}`);
-                  clearInterval(interval);
-               }
-            }, 1000);
+  const getButtonColor = () => {
+    if (isAvailable) return '#D48665';
+    if (isFinished) return '#6cbf6b';
+    return '#493f3b';
+  };
 
-            return () => clearInterval(interval);
-         }
-      }
-
-      // Очистка при размонтировании компонента
-      return () => {
-         if (socket) {
-            socket.off('mining_balance');
-         }
-      };
-   }, [clickTime, isAvailable, counterValue, socket]);  // Добавьте socket в зависимости
-
-
-   const getButtonColor = () => {
-      if (isAvailable) {
-         return '#D48665';
-      }
-      else if (isFinished) {
-         return '#6cbf6b';
-      }
-      else {
-         return '#493f3b';
-      }
-   };
-
-   return (
-      <div className='button-wrap'>
-         <motion.button
-            onClick={handleClick}
-            className='start-button'
-            animate={{
-               backgroundColor: getButtonColor(),
-               y: isClicked ? -50 : 0
-            }}
-            transition={{ type: 'spring', mass: 1, stiffness: 40 }}
-            disabled={isClicked}
-         >
-            {buttonText}
-            {buttonText === t('button_farming_text') && <Counter counterValue={counterValue} setCounterValue={setCounterValue} delta={delta} /> || buttonText === t('button_collect_text')}
-         </motion.button>
-         <AnimatePresence>
-            {isClicked && (
-               <motion.div
-                  className='terminal'
-                  initial={{ opacity: 0, height: 0, scale: 0.65 }}
-                  animate={{ opacity: 1, scale: 0.99, height: 'auto' }}
-                  exit={{ opacity: 0, scale: 0.65, height: 70 }}
-                  transition={{ type: 'spring', mass: 0.7, stiffness: 40 }}
-               >
-                  <Terminal
-                     height={140}
-                     lines={termLines}
-                     interval={30}
-                  />
-               </motion.div>
-            )}
-         </AnimatePresence>
-      </div>
-   );
+  return (
+    <div className='button-wrap'>
+      <motion.button
+        onClick={handleClick}
+        className='start-button'
+        animate={{ backgroundColor: getButtonColor(), y: isAnimation ? -50 : 0 }}
+        transition={{ type: 'spring', mass: 1, stiffness: 40 }}
+        disabled={isAnimation}
+      >
+        {buttonText}
+        {buttonText === t('button_farming_text') && (
+          <Counter counterValue={counterValue} setCounterValue={setCounterValue} />
+        )}
+      </motion.button>
+      <AnimatePresence>
+        {isAnimation && (
+          <motion.div
+            className='terminal'
+            initial={{ opacity: 0, height: 0, scale: 0.65 }}
+            animate={{ opacity: 1, scale: 0.99, height: 'auto' }}
+            exit={{ opacity: 0, scale: 0.65, height: 70 }}
+            transition={{ type: 'spring', mass: 0.7, stiffness: 40 }}
+          >
+            <Terminal height={140} lines={termLines} interval={30} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export default StartButton;

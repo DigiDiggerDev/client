@@ -64,7 +64,7 @@ function App() {
 
   useEffect(() => {
     // const socket = io('http://127.0.0.1:8000');
-    socketRef.current = io('https://8v1cxo-109-252-37-67.ru.tuna.am', {
+    socketRef.current = io('https://yx68mn-176-59-43-120.ru.tuna.am', {
       transports: ['websocket']
     });
 
@@ -81,6 +81,9 @@ function App() {
       socket.on('error', (error) => {
         console.error('Socket error:', error);
       });
+    }
+    else {
+      console.error('Socket not initialized');
     }
 
     return () => {
