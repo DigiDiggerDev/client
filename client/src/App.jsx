@@ -64,7 +64,7 @@ function App() {
 
   useEffect(() => {
     // const socket = io('http://127.0.0.1:8000');
-    socketRef.current = io('https://d4wluc-109-252-37-67.ru.tuna.am', {
+    socketRef.current = io('https://y33zi7-109-252-37-67.ru.tuna.am', {
       transports: ['websocket']
     });
 
@@ -87,7 +87,7 @@ function App() {
     }
 
     return () => {
-      if (socket) {
+      if (socket.connected) {
         socket.disconnect();
       }
     };
