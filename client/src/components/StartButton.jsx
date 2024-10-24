@@ -31,58 +31,47 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
   const socket = socketRef.current;
 
   const [isAnimation, setIsAnimation] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const [isAvailable, setIsAvailable] = useState(true);
+  const [status, setStatus] = useState('not_started');
   const [buttonText, setButtonText] = useState(t('button_start_text'));
 
   const userId = 1;
 
-  // useEffect(() => {
-  //   if (socket) {
-  //     console.log('Получение состояния кнопки')
-
-  //     socket.emit('get_start_button', { userId });
-  //     socket.on('mining_balance', (data) => {
-  //       setCounterValue(data.mining_balance);
-
-  //       if (data.status === 'in_process') {
-  //         setIsAvailable(false);
-  //         setButtonText(t('button_farming_text'));
-  //         inFarming();
-  //       } else if (data.status === 'finished') {
-  //         setIsFinished(true);
-  //         setIsAvailable(false);
-  //       }
-  //     });
-  //   }
-  // }, [socket]);
-
-  // в процессе работы
   useEffect(() => {
-    if (!isAvailable && isAnimation) {
+    if (socket) {
       const interval = setInterval(() => {
-        socket.on('mining_balance', (data) => {
+        socket.emit('get_start_button', { userId });
+
+        socket.on('start_button', (data) => {
+
+          setStatus(data.status);
           setCounterValue(data.mining_balance);
-          if (data.status === 'finished') {
-            setIsFinished(true);
+
+          if (data.status === 'in_process') {
+            console.log('Майнинг в процессе');
+            setStatus('in_process');
+            setButtonText(t('button_farming_text'));
+
+          } else if (data.status === 'finished') {
+            setStatus('finished');
+
+            console.log('Майнинг завершен', counterValue);
+
             setButtonText(`${t('button_collect_text')} ${data.mining_balance.toFixed(2)}`);
-            clearInterval(interval);
           }
         });
       }, 1000);
 
-      return () => clearInterval(interval);
+     return () => clearInterval(interval);
     }
-  }, [isAvailable, isAnimation, setCounterValue]);
 
-  // для запуска или сбора 
+  }, [socket]);
+
   const handleClick = () => {
-    if (isAvailable && !isAnimation) {
+    if (status === 'not_started') {
       socket.emit('mining', { userId });
       tg_haptic.impactOccurred('medium');
 
       setIsAnimation(true);
-      setIsAvailable(false);
       setButtonText(t('button_launch_text'));
 
       setTimeout(() => {
@@ -90,18 +79,20 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
         setIsAnimation(false);
         setButtonText(t('button_farming_text'));
       }, 6000);
-    } else if (isFinished) {
+    } else if (status === 'finished') {
       onCollect(counterValue);
-      setIsFinished(false);
+
+      socket.emit('mining_collect', { userId });
+
       setButtonText(t('button_start_text'));
-      setIsAvailable(true);
+      setStatus('not_started');
       setCounterValue(0);
     }
   };
 
   const getButtonColor = () => {
-    if (isAvailable) return '#D48665';
-    if (isFinished) return '#6cbf6b';
+    if (status === 'not_started') return '#D48665';
+    else if (status === 'finished') return '#6cbf6b';
     return '#493f3b';
   };
 
