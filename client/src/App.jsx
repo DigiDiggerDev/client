@@ -63,34 +63,37 @@ function App() {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    // const socket = io('http://127.0.0.1:8000');
-    socketRef.current = io('https://y33zi7-109-252-37-67.ru.tuna.am', {
-      transports: ['websocket']
-    });
-
-    const socket = socketRef.current;
-    const userId = 1;
-
-    if (socket) {
-      socket.emit('get_wallet', { userId });
-
-      socket.on('wallet_balance', (data) => {
-        setBalance(data.wallet);
+    if (!socketRef.current) {
+      socketRef.current = io('https://63f80x-109-252-37-67.ru.tuna.am', {
+        transports: ['websocket']
       });
-
-      socket.on('error', (error) => {
-        console.error('Socket error:', error);
-      });
-    }
-    else {
-      console.error('Socket not initialized');
-    }
-
-    return () => {
-      if (socket.connected) {
-        socket.disconnect();
+  
+      const socket = socketRef.current;
+      const userId = 1;
+  
+      if (socket) {
+        socket.emit('get_wallet', { userId });
+  
+        socket.on('wallet_balance', (data) => {
+          setBalance(data.wallet);
+        });
+  
+        socket.on('error', (error) => {
+          console.error('Socket error:', error);
+        });
       }
-    };
+      else {
+        console.error('Socket not initialized');
+      }
+  
+      return () => {
+        if (socket.connected) {
+          socketRef.current.disconnect();
+        }
+      };
+    }
+    // const socket = io('http://127.0.0.1:8000');
+    
   }, []);
 
   const handleCollect = (collected) => {

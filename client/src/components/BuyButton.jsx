@@ -9,6 +9,7 @@ const tg_haptic = window.Telegram.WebApp.HapticFeedback;
 
 const BuyButton = ({ selectedItem, socketRef }) => {
    const { t } = useTranslation();
+   const socket = socketRef.current;
 
    const badPayment = () => {
       tg_haptic.notificationOccurred('warning');
@@ -23,7 +24,7 @@ const BuyButton = ({ selectedItem, socketRef }) => {
       });
    };
 
-   const goodPayment = ({ selectedItem, userId, cost }) => {
+   const goodPayment = (selectedItem, userId, cost) => {
       tg_haptic.impactOccurred('light');
 
       socket.emit('remove_wallet', { userId, amount: cost });
@@ -39,8 +40,6 @@ const BuyButton = ({ selectedItem, socketRef }) => {
    };
 
    const handleClick = () => {
-      var balance = 0;
-
       const userId = 1;
       const cost = 5;
       
@@ -49,15 +48,14 @@ const BuyButton = ({ selectedItem, socketRef }) => {
       socket.emit('get_wallet', { userId });
 
       socket.on('wallet_balance', (data) => {
-         balance = data.wallet;
-      });
+         console.log(data.wallet);
 
-      if (balance < cost) {
-         badPayment();
-      }
-      else {
-         goodPayment( selectedItem, userId, cost );
-      }
+         if (data.wallet < cost) {
+            badPayment();
+         } else {
+            goodPayment(selectedItem, userId, cost);
+         }
+      });
    };
 
    return (

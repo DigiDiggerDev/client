@@ -38,6 +38,8 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
 
   useEffect(() => {
     if (socket) {
+      setButtonText(t('button_start_text'));
+
       const interval = setInterval(() => {
         socket.emit('get_start_button', { userId });
 
@@ -47,14 +49,11 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
           setCounterValue(data.mining_balance);
 
           if (data.status === 'in_process') {
-            console.log('Майнинг в процессе');
             setStatus('in_process');
             setButtonText(t('button_farming_text'));
 
           } else if (data.status === 'finished') {
             setStatus('finished');
-
-            console.log('Майнинг завершен', counterValue);
 
             setButtonText(`${t('button_collect_text')} ${data.mining_balance.toFixed(2)}`);
           }

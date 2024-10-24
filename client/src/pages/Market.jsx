@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SnackbarProvider } from 'notistack'
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -8,6 +8,10 @@ import BuyButton from '../components/BuyButton';
 
 const Market = ({ items, socketRef }) => {
    const [selectedItem, setSelectedItem] = useState(null);
+
+   useEffect(() => {
+      console.log(selectedItem);
+   }, [selectedItem]);
 
    return (
       <div className='wrapper'>
