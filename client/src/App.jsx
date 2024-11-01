@@ -64,7 +64,7 @@ function App() {
 
   useEffect(() => {
     if (!socketRef.current) {
-      socketRef.current = io('https://63f80x-109-252-37-67.ru.tuna.am', {
+      socketRef.current = io('https://gqku6g-109-252-37-67.ru.tuna.am', {
         transports: ['websocket']
       });
   
@@ -132,7 +132,7 @@ function App() {
               </TabList>
 
               <TabPanel>
-                <Market items={video_cards} socketRef={socketRef} />
+                <Market items={video_cards} socketRef={socketRef} setBalance={setBalance} />
               </TabPanel>
 
               <TabPanel>
