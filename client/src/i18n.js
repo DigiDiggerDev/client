@@ -32,6 +32,7 @@ i18n
                button_launch_text: "Launching...",
                button_farming_text: "Farming...",
                button_collect_text: "Collect",
+               button_loading_text: "Loading...",
 
                notification_buy: "Purchased",
                notification_notbuy: "Insufficient funds",
@@ -62,6 +63,7 @@ i18n
                button_launch_text: "Запуск...",
                button_farming_text: "Идёт добыча...",
                button_collect_text: "Собрать",
+               button_loading_text: "Загрузка...",
 
                notification_buy: "Куплен предмет",
                notification_notbuy: "Недостаточно средств",

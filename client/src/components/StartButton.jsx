@@ -32,13 +32,12 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
 
   const [isAnimation, setIsAnimation] = useState(false);
   const [status, setStatus] = useState('not_started');
-  const [buttonText, setButtonText] = useState(t('button_start_text'));
-
+  const [buttonText, setButtonText] = useState(t('button_loading_text'));
+  
   const userId = 1;
-
+  
   useEffect(() => {
     if (socket) {
-      setButtonText(t('button_start_text'));
 
       const interval = setInterval(() => {
         socket.emit('get_start_button', { userId });
@@ -54,8 +53,10 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
 
           } else if (data.status === 'finished') {
             setStatus('finished');
-
             setButtonText(`${t('button_collect_text')} ${data.mining_balance.toFixed(2)}`);
+
+          } else if (data.status === 'not_started') {
+            setButtonText(t('button_start_text'));
           }
         });
       }, 1000);
