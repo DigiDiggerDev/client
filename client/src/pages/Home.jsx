@@ -43,8 +43,8 @@ const Home = ({ socketRef }) => {
          socket.once('hometable', (data) => {
             console.log(data);
 
-            setDataVCS(data.vcs || null);
-            setDataPSU(data.psus || null);
+            // setDataVCS(data.vcs || null);
+            // setDataPSU(data.psus || null);
 
             console.log(dataPSU);
             console.log(dataVCS);
@@ -66,11 +66,11 @@ const Home = ({ socketRef }) => {
             </TabList>
 
             <TabPanel>
-               {dataVCS ? <HomeTable data={dataVCS} /> : <p>{t('no_data')}</p>}
+               {dataVCS ? <HomeTable data={dataVCS} /> : <p className='no-data-label'>{t('no_data')}</p>}
             </TabPanel>
 
             <TabPanel>
-               {dataPSU ? <HomeTable data={dataPSU} /> : <p>{t('no_data')}</p>}
+               {dataPSU ? <HomeTable data={dataPSU} /> : <p className='no-data-label'>{t('no_data')}</p>}
             </TabPanel>
          </Tabs>
       </div>

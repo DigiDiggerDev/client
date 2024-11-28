@@ -36,6 +36,8 @@ i18n
 
                notification_buy: "Purchased",
                notification_notbuy: "Insufficient funds",
+
+               no_data: "Empty",
             }
          },
          ru: {
@@ -67,6 +69,8 @@ i18n
 
                notification_buy: "Куплен предмет",
                notification_notbuy: "Недостаточно средств",
+
+               no_data: "Пусто",
             }
          },
       },
