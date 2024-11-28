@@ -24,6 +24,7 @@ const BuyButton = ({ selectedItem, socketRef, setBalance }) => {
    const goodPayment = useCallback((selectedItem, userId, cost) => {
       tg_haptic.impactOccurred('light');
       socket.emit('remove_wallet', { userId, amount: cost });
+      socket.emit('add_item', { userId, item: selectedItem });
 
       socket.once('wallet_balance', (data) => {
          setBalance(data.wallet);
