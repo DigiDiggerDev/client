@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { useTranslation } from 'react-i18next';
 import 'react-tabs/style/react-tabs.css';
@@ -27,8 +27,34 @@ const data_psu = [
    { name: 'Power Limit', capacity: 0.1, amount: 10 },
 ];
 
-const Home = () => {
+const Home = ({ socketRef }) => {
+   const [dataPSU, setDataPSU] = useState(null);
+   const [dataVCS, setDataVCS] = useState(null);
+
    const { t } = useTranslation();
+   const socket = socketRef.current;
+
+   const userId = 1;
+
+   useEffect(() => {
+      if (socket) {
+         socket.emit('get_hometable', { userId });
+
+         socket.once('hometable', (data) => {
+            console.log(data);
+
+            setDataVCS(data.vcs || null);
+            setDataPSU(data.psus || null);
+
+            console.log(dataPSU);
+            console.log(dataVCS);
+         });
+      }
+
+      return () => {
+         socket.off('hometable');
+      };
+   }, [socket]);
 
    return (
       <div className='Home'>
@@ -40,11 +66,11 @@ const Home = () => {
             </TabList>
 
             <TabPanel>
-               <HomeTable data={data_video_cards}/>
+               {dataVCS ? <HomeTable data={dataVCS} /> : <p>{t('no_data')}</p>}
             </TabPanel>
 
             <TabPanel>
-               <HomeTable data={data_psu}/>
+               {dataPSU ? <HomeTable data={dataPSU} /> : <p>{t('no_data')}</p>}
             </TabPanel>
          </Tabs>
       </div>
