@@ -52,9 +52,9 @@ const HomeTable = ({ data }) => {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                      >
                         <TableCell sx={tableContentCellStyles} component="th" scope="row">{data.name}</TableCell>
-                        <TableCell sx={tableContentCellStyles} align="right">{data.capacity}</TableCell>
+                        <TableCell sx={tableContentCellStyles} align="right">{data.capacity || data.output}</TableCell>
                         <TableCell sx={tableContentCellStyles} align="right">{data.amount}</TableCell>
-                        <TableCell sx={tableContentCellStyles} align="right">{data.capacity * data.amount}</TableCell>
+                        <TableCell sx={tableContentCellStyles} align="right">{data.capacity * data.amount || data.output * data.amount}</TableCell>
                      </TableRow>
                   ))}
                </TableBody>

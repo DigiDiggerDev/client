@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useRef } from 'react'
-// import axios from 'axios'
+import axios from 'axios'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
 import 'react-animated-term/dist/react-animated-term.css'
@@ -25,24 +25,6 @@ tg.isVerticalSwipesEnabled = false;
 tg.expand();
 tg.ready();
 
-const video_cards = [
-  { id: 1, title: 'Название видеокарты 1', description: 'Описание видеокарты 1', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'vc' },
-  { id: 2, title: 'Название видеокарты 2', description: 'Описание видеокарты 2', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'vc' },
-  { id: 3, title: 'Название видеокарты 3', description: 'Описание видеокарты 3', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'vc' },
-  { id: 4, title: 'Название видеокарты 4', description: 'Описание видеокарты 4', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'vc' },
-  { id: 5, title: 'Название видеокарты 5', description: 'Описание видеокарты 5', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'vc' },
-  { id: 6, title: 'Название видеокарты 6', description: 'Описание видеокарты 6', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'vc' },
-];
-
-const psu = [
-  { id: 1, title: 'Название блока питания 1', description: 'Описание блока питания 1', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'psu' },
-  { id: 2, title: 'Название блока питания 2', description: 'Описание блока питания 2', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'psu' },
-  { id: 3, title: 'Название блока питания 3', description: 'Описание блока питания 3', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'psu' },
-  { id: 4, title: 'Название блока питания 4', description: 'Описание блока питания 4', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'psu' },
-  { id: 5, title: 'Название блока питания 5', description: 'Описание блока питания 5', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'psu' },
-  { id: 6, title: 'Название блока питания 6', description: 'Описание блока питания 6', image: '/static/images/cards/contemplative-reptile.jpg', capacity: 0.01, type: 'psu' },
-];
-
 function App() {
   const { t } = useTranslation();
 
@@ -60,11 +42,26 @@ function App() {
   const [counterValue, setCounterValue] = useState(0);
   const [balance, setBalance] = useState(0);
 
+  const [vcCards, setVcCards] = useState([]);
+  const [psuCards, setPsuCards] = useState([]);
+
   const socketRef = useRef(null);
+
+  const address = 'https://y9oke6-2a00-1370-817a-658c-3418-5c59-6f44-3a68.ru.tuna.am'
+
+  useEffect(() => {
+    axios.get(`${address}/api/cards/video`)
+      .then(response => setVcCards(response.data))
+      .catch(error => console.error("Ошибка загрузки видеокарт:", error));
+
+    axios.get(`${address}/api/cards/psu`)
+      .then(response => setPsuCards(response.data))
+      .catch(error => console.error("Ошибка загрузки блоков питания:", error));
+  }, []);
 
   useEffect(() => {
     if (!socketRef.current) {
-      socketRef.current = io('https://wzsqnn-2a00-1370-817a-39f5-d54f-1008-3595-67c7.ru.tuna.am', {
+      socketRef.current = io(address, {
         transports: ['websocket']
       });
   
@@ -92,7 +89,6 @@ function App() {
         }
       };
     }
-    // const socket = io('http://127.0.0.1:8000');
     
   }, []);
 
@@ -132,11 +128,11 @@ function App() {
               </TabList>
 
               <TabPanel>
-                <Market items={video_cards} socketRef={socketRef} setBalance={setBalance} />
+                <Market items={vcCards} socketRef={socketRef} setBalance={setBalance} />
               </TabPanel>
 
               <TabPanel>
-                <Market items={psu} socketRef={socketRef} setBalance={setBalance} />
+                <Market items={psuCards} socketRef={socketRef} setBalance={setBalance} />
               </TabPanel>
             </Tabs>
           </TabPanel>

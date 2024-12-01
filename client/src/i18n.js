@@ -37,6 +37,8 @@ i18n
                notification_buy: "Purchased",
                notification_notbuy: "Insufficient funds",
 
+               notification_energy: "Not enough power",
+
                no_data: "Empty",
             }
          },
@@ -54,9 +56,9 @@ i18n
                buy_button: "Купить",
 
                table_name: "Название",
-               table_capacity: "Добыча",
+               table_capacity: "Производ.",
                table_amount: "Кол-во",
-               table_total_capacity: "Общая добыча",
+               table_total_capacity: "Общая произв.",
 
                current_load: "Нагрузка",
                max_load: "Макс. нагрузка",
@@ -69,6 +71,8 @@ i18n
 
                notification_buy: "Куплен предмет",
                notification_notbuy: "Недостаточно средств",
+
+               notification_energy: "Недостаточно мощности",
 
                no_data: "Пусто",
             }

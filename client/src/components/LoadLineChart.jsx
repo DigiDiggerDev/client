@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, YAxis, Legend, ResponsiveContainer } from 'recharts';
+import { enqueueSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-
-const load = 150;
-const maxLoad = 200;
 
 const generateRandomLoad = (load, maxLoad) => {
    const minPercent = 0.8;
@@ -13,41 +11,94 @@ const generateRandomLoad = (load, maxLoad) => {
    return Math.random() * (maxRandomLoad - minLoad) + minLoad;
 };
 
-const LoadLineChart = () => {
+const LoadLineChart = ({ socketRef }) => {
    const { t } = useTranslation();
 
-   const initialData = [
-      { currentLoad: load, maxLoad: maxLoad },
-      { currentLoad: load, maxLoad: maxLoad },
-      { currentLoad: load, maxLoad: maxLoad },
-      { currentLoad: load, maxLoad: maxLoad },
-      { currentLoad: load, maxLoad: maxLoad },
-      { currentLoad: load, maxLoad: maxLoad },
-      { currentLoad: load, maxLoad: maxLoad },
-      { currentLoad: load, maxLoad: maxLoad }
-   ];
+   const socket = socketRef.current;
 
-   const [data, setData] = useState(initialData);
+   const userId = 1;
+
+   const [load, setLoad] = useState(0);
+   const [maxLoad, setMaxLoad] = useState(0);
+
+   const [data, setData] = useState([]);
 
    useEffect(() => {
-      const interval = setInterval(() => {
-         const newData = data.map((point, index) => {
-            if (index === data.length - 1) {
-               return {
-                  ...point,
-                  currentLoad: generateRandomLoad(load, maxLoad),
-               };
-            } else {
-               return {
-                  ...data[index + 1],
-               };
-            }
+      if (socket) {
+         socket.emit('get_load_chart', { userId });
+
+         socket.once('load_chart', (data) => {
+            console.log(data);
+
+            setLoad(data.load);
+            setMaxLoad(data.max_load);
          });
+      }
 
-         setData(newData);
-      }, 2000);
+      const initialData = [
+         { currentLoad: load, maxLoad: maxLoad },
+         { currentLoad: load, maxLoad: maxLoad },
+         { currentLoad: load, maxLoad: maxLoad },
+         { currentLoad: load, maxLoad: maxLoad },
+         { currentLoad: load, maxLoad: maxLoad },
+         { currentLoad: load, maxLoad: maxLoad },
+         { currentLoad: load, maxLoad: maxLoad },
+         { currentLoad: load, maxLoad: maxLoad }
+      ];
 
-      return () => clearInterval(interval);
+      setData(initialData);
+
+      return () => {
+         socket.off('load_chart');
+      };
+   }, [socket]);
+
+   useEffect(() => {
+      if (load > maxLoad) {
+         setData((prevData) =>
+            prevData.map(() => ({
+               currentLoad: maxLoad,
+               maxLoad: maxLoad,
+            }))
+         );
+
+         enqueueSnackbar(`${t('notification_energy')}`, {
+            anchorOrigin: { vertical: 'top', horizontal: 'center' },
+            autoHideDuration: 4000,
+            variant: 'error'
+         });
+      } else {
+         setData((prevData) =>
+            prevData.map(() => ({
+               currentLoad: generateRandomLoad(load, maxLoad),
+               maxLoad: maxLoad,
+            }))
+         );
+      }
+   }, [load, maxLoad]);
+
+   useEffect(() => {
+      if (load <= maxLoad) {
+         const interval = setInterval(() => {
+            const newData = data.map((point, index) => {
+               if (index === data.length - 1) {
+                  return {
+                     ...point,
+                     currentLoad: generateRandomLoad(load, maxLoad),
+                     maxLoad: maxLoad,
+                  };
+               } else {
+                  return {
+                     ...data[index + 1],
+                  };
+               }
+            });
+   
+            setData(newData);
+         }, 2000);
+   
+         return () => clearInterval(interval);
+      }
    }, [data]);
 
    return (
