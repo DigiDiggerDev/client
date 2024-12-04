@@ -24,6 +24,28 @@ tg.headerColor = '#000000';
 tg.isVerticalSwipesEnabled = false;
 tg.expand();
 tg.ready();
+tg.lockOrientation();
+
+const fetchAndCacheData = async (key, apiUrl, setState) => {
+  tg.CloudStorage.getItem(key, (error, value) => {
+    if (!error && value) {
+      console.log(`Данные для ${key} получены из CloudStorage`);
+      setState(JSON.parse(value)); 
+    } else {
+      axios.get(apiUrl)
+        .then(response => {
+          const data = response.data;
+          setState(data);
+
+          tg.CloudStorage.setItem(key, JSON.stringify(data), (error, success) => {
+            if (error) console.error(`Ошибка сохранения ${key} в CloudStorage:`, error);
+            else console.log(`Данные для ${key} сохранены в CloudStorage`);
+          });
+        })
+        .catch(error => console.error(`Ошибка загрузки ${key} с API:`, error));
+    }
+  });
+};
 
 function App() {
   const { t } = useTranslation();
@@ -47,16 +69,11 @@ function App() {
 
   const socketRef = useRef(null);
 
-  const address = 'https://y9oke6-2a00-1370-817a-658c-3418-5c59-6f44-3a68.ru.tuna.am'
+  const address = 'https://62g5ol-2a00-1370-817a-658c-2d39-6929-48d5-938a.ru.tuna.am'
 
   useEffect(() => {
-    axios.get(`${address}/api/cards/video`)
-      .then(response => setVcCards(response.data))
-      .catch(error => console.error("Ошибка загрузки видеокарт:", error));
-
-    axios.get(`${address}/api/cards/psu`)
-      .then(response => setPsuCards(response.data))
-      .catch(error => console.error("Ошибка загрузки блоков питания:", error));
+    fetchAndCacheData("videoCards", `${address}/api/cards/video`, setVcCards);
+    fetchAndCacheData("psuCards", `${address}/api/cards/psu`, setPsuCards);
   }, []);
 
   useEffect(() => {
@@ -110,7 +127,7 @@ function App() {
         <img src="src/images/rotate.png" alt="" />
       </div>
       <div className='app-wrapper'>
-        <div className='debug'>DEBUG. API version: {tg.version}. Height: {tg.viewportHeight}</div>
+        <div className='debug'>DEBUG: API version: {tg.version}. Height: {tg.viewportHeight}</div>
         <Balance balance={balance} />
 
         <Tabs>
