@@ -26,24 +26,55 @@ tg.expand();
 tg.ready();
 tg.lockOrientation();
 
-const fetchAndCacheData = async (key, apiUrl, setState) => {
-  tg.CloudStorage.getItem(key, (error, value) => {
-    if (!error && value) {
-      console.log(`Данные для ${key} получены из CloudStorage`);
-      setState(JSON.parse(value)); 
-    } else {
-      axios.get(apiUrl)
-        .then(response => {
-          const data = response.data;
-          setState(data);
+const fetchAndCacheData = async (key, apiUrl, metaUrl, setState) => {
+  tg.CloudStorage.getItem(key, (error, cachedValue) => {
+    const cachedData = !error && cachedValue ? JSON.parse(cachedValue) : null;
 
-          tg.CloudStorage.setItem(key, JSON.stringify(data), (error, success) => {
-            if (error) console.error(`Ошибка сохранения ${key} в CloudStorage:`, error);
-            else console.log(`Данные для ${key} сохранены в CloudStorage`);
+    axios.get(metaUrl)
+      .then(metaResponse => {
+        const serverVersion = metaResponse.data.version;
+
+        if (cachedData && cachedData.version === serverVersion) {
+          console.log(`Данные для ${key} актуальны. Используем кеш.`);
+          setState(cachedData.data);
+        } else {
+          console.log(`Данные для ${key} устарели. Удаляем старые данные и загружаем новые.`);
+
+          // Удаляем устаревшие данные из CloudStorage
+          tg.CloudStorage.removeItem(key, (removeError) => {
+            if (removeError) {
+              console.error(`Ошибка удаления устаревших данных ${key} из CloudStorage:`, removeError);
+            } else {
+              console.log(`Устаревшие данные для ${key} успешно удалены из CloudStorage.`);
+            }
           });
-        })
-        .catch(error => console.error(`Ошибка загрузки ${key} с API:`, error));
-    }
+
+          // Загружаем новые данные
+          axios.get(apiUrl)
+            .then(dataResponse => {
+              const newData = dataResponse.data;
+              setState(newData);
+
+              const dataToCache = {
+                version: serverVersion,
+                data: newData,
+              };
+
+              tg.CloudStorage.setItem(key, JSON.stringify(dataToCache), (setError) => {
+                if (setError) console.error(`Ошибка сохранения ${key} в CloudStorage:`, setError);
+                else console.log(`Данные для ${key} обновлены в CloudStorage`);
+              });
+            })
+            .catch(fetchError => console.error(`Ошибка загрузки ${key} с API:`, fetchError));
+        }
+      })
+      .catch(metaError => {
+        console.error(`Ошибка получения метаинформации для ${key}:`, metaError);
+        if (cachedData) {
+          console.log(`Используем устаревшие данные для ${key} из кеша.`);
+          setState(cachedData.data);
+        }
+      });
   });
 };
 
@@ -69,11 +100,22 @@ function App() {
 
   const socketRef = useRef(null);
 
-  const address = 'https://gnw9dk-2a00-1370-817a-658c-c8df-286f-64c3-c2b0.ru.tuna.am'
+  const address = 'https://jvkgkj-2a00-1370-817a-658c-c8df-286f-64c3-c2b0.ru.tuna.am'
 
   useEffect(() => {
-    fetchAndCacheData("videoCards", `${address}/api/cards/video`, setVcCards);
-    fetchAndCacheData("psuCards", `${address}/api/cards/psu`, setPsuCards);
+    fetchAndCacheData(
+      'video_cards',
+      `${address}/api/cards/video`,
+      `${address}/api/cards/video/meta`,
+      setVcCards
+    );
+
+    fetchAndCacheData(
+      'psu_cards',
+      `${address}/api/cards/psu`,
+      `${address}/api/cards/psu/meta`,
+      setPsuCards
+    );
   }, []);
   
   useEffect(() => {
@@ -129,7 +171,7 @@ function App() {
         <img src="src/images/rotate.png" alt="" />
       </div>
       <div className='app-wrapper'>
-        <div className='debug'>DEBUG: API version: {tg.version}. Height: {tg.viewportHeight}</div>
+        <div className='debug'>DEBUG: APIv: {tg.version}. H: {tg.viewportHeight}</div>
         <Balance balance={balance} />
 
         <Tabs>
