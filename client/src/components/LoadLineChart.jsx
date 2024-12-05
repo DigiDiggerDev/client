@@ -16,7 +16,7 @@ const LoadLineChart = ({ socketRef }) => {
 
    const socket = socketRef.current;
 
-   const userId = 1;
+   const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
 
    const [load, setLoad] = useState(0);
    const [maxLoad, setMaxLoad] = useState(0);

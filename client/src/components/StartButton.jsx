@@ -34,7 +34,7 @@ const StartButton = ({ counterValue, setCounterValue, onCollect, socketRef }) =>
   const [status, setStatus] = useState('not_started');
   const [buttonText, setButtonText] = useState(t('button_loading_text'));
   
-  const userId = 1;
+  const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
   
   useEffect(() => {
     if (socket) {

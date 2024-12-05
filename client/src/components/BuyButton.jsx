@@ -38,7 +38,7 @@ const BuyButton = ({ selectedItem, socketRef, setBalance }) => {
    }, [socket, t]);
 
    const handleClick = () => {
-      const userId = 1;
+      const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
       const cost = 5;
 
       socket.emit('get_wallet', { userId });

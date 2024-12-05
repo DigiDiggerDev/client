@@ -69,13 +69,13 @@ function App() {
 
   const socketRef = useRef(null);
 
-  const address = 'https://62g5ol-2a00-1370-817a-658c-2d39-6929-48d5-938a.ru.tuna.am'
+  const address = 'https://gnw9dk-2a00-1370-817a-658c-c8df-286f-64c3-c2b0.ru.tuna.am'
 
   useEffect(() => {
     fetchAndCacheData("videoCards", `${address}/api/cards/video`, setVcCards);
     fetchAndCacheData("psuCards", `${address}/api/cards/psu`, setPsuCards);
   }, []);
-
+  
   useEffect(() => {
     if (!socketRef.current) {
       socketRef.current = io(address, {
@@ -83,7 +83,8 @@ function App() {
       });
   
       const socket = socketRef.current;
-      const userId = 1;
+      // const userId = 1;
+      const userId = tg.initDataUnsafe.user.id;
   
       if (socket) {
         socket.emit('get_wallet', { userId });
@@ -109,13 +110,14 @@ function App() {
     
   }, []);
 
+  // исправить
   const handleCollect = (collected) => {
     tg_haptic.notificationOccurred('success');
     setBalance(balance + collected);
 
     const socket = socketRef.current;
 
-    const userId = 1;
+    const userId = tg.initDataUnsafe.user.id;
 
     socket.emit('add_wallet', { userId, amount: collected });
   };

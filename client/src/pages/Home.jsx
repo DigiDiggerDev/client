@@ -17,7 +17,9 @@ const Home = ({ socketRef }) => {
    const { t } = useTranslation();
    const socket = socketRef.current;
 
-   const userId = 1;
+   // const userId = 1;
+   const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+   console.log(userId);
 
    useEffect(() => {
       if (socket) {
