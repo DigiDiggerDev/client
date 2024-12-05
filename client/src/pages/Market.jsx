@@ -44,6 +44,12 @@ const Market = ({ items, socketRef, setBalance }) => {
                         <motion.img className='selected-card-image' src={'src/images/image.png'} />
                         <motion.h2 className='selected-card-title'>{selectedItem.title}</motion.h2>
                         <motion.h5 className='selected-card-description'>{selectedItem.description}</motion.h5>
+                        <motion.h5 className="selected-card-capacity">
+                        {selectedItem.type === 'vc' 
+                           ? `Производительность: ${selectedItem.capacity} bit/min`
+                           : `Мощность: ${selectedItem.output}W`}
+                        </motion.h5>
+                        {selectedItem.type === 'vc' && <motion.h5 className="selected-card-consumption">Потребление: {selectedItem.consumption}W</motion.h5>}
                         <BuyButton selectedItem={selectedItem} socketRef={socketRef} setBalance={setBalance} />
                      </motion.div>
                   </ClickAwayListener>

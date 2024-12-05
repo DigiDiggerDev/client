@@ -40,7 +40,6 @@ const fetchAndCacheData = async (key, apiUrl, metaUrl, setState) => {
         } else {
           console.log(`Данные для ${key} устарели. Удаляем старые данные и загружаем новые.`);
 
-          // Удаляем устаревшие данные из CloudStorage
           tg.CloudStorage.removeItem(key, (removeError) => {
             if (removeError) {
               console.error(`Ошибка удаления устаревших данных ${key} из CloudStorage:`, removeError);
@@ -49,7 +48,6 @@ const fetchAndCacheData = async (key, apiUrl, metaUrl, setState) => {
             }
           });
 
-          // Загружаем новые данные
           axios.get(apiUrl)
             .then(dataResponse => {
               const newData = dataResponse.data;
@@ -100,7 +98,7 @@ function App() {
 
   const socketRef = useRef(null);
 
-  const address = 'https://jvkgkj-2a00-1370-817a-658c-c8df-286f-64c3-c2b0.ru.tuna.am'
+  const address = 'https://mwb9pj-2a00-1370-817a-658c-c8df-286f-64c3-c2b0.ru.tuna.am'
 
   useEffect(() => {
     fetchAndCacheData(
@@ -125,7 +123,6 @@ function App() {
       });
   
       const socket = socketRef.current;
-      // const userId = 1;
       const userId = tg.initDataUnsafe.user.id;
   
       if (socket) {
