@@ -27,8 +27,9 @@ const HomeTable = ({ data }) => {
    useEffect(() => {
       if (window.innerHeight < 650) {
          setMaxHeight(200);
+
+         console.log(data)
       }
-      console.log(window.innerHeight);
    }, []);
 
    const { t } = useTranslation(); 
@@ -54,7 +55,9 @@ const HomeTable = ({ data }) => {
                         <TableCell sx={tableContentCellStyles} component="th" scope="row">{data.name}</TableCell>
                         <TableCell sx={tableContentCellStyles} align="right">{data.capacity || data.output}</TableCell>
                         <TableCell sx={tableContentCellStyles} align="right">{data.amount}</TableCell>
-                        <TableCell sx={tableContentCellStyles} align="right">{data.capacity * data.amount || data.output * data.amount}</TableCell>
+                        <TableCell sx={tableContentCellStyles} align="right">
+                           {data.capacity ? (data.capacity * data.amount).toFixed(2) : data.output * data.amount}
+                        </TableCell>
                      </TableRow>
                   ))}
                </TableBody>

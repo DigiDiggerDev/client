@@ -98,7 +98,7 @@ function App() {
 
   const socketRef = useRef(null);
 
-  const address = 'https://mwb9pj-2a00-1370-817a-658c-c8df-286f-64c3-c2b0.ru.tuna.am'
+  const address = 'https://tx8s7u-2a00-1370-817a-658c-3ca5-1cca-f876-d936.ru.tuna.am'
 
   useEffect(() => {
     fetchAndCacheData(

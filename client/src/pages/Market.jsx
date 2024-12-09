@@ -46,10 +46,11 @@ const Market = ({ items, socketRef, setBalance }) => {
                         <motion.h5 className='selected-card-description'>{selectedItem.description}</motion.h5>
                         <motion.h5 className="selected-card-capacity">
                         {selectedItem.type === 'vc' 
-                           ? `Производительность: ${selectedItem.capacity} bit/min`
-                           : `Мощность: ${selectedItem.output}W`}
+                           ? (<span>Производительность: <span>{selectedItem.capacity} bit/min</span></span>)
+                           : (<span>Мощность: <span>{selectedItem.output}W</span></span>)}
                         </motion.h5>
-                        {selectedItem.type === 'vc' && <motion.h5 className="selected-card-consumption">Потребление: {selectedItem.consumption}W</motion.h5>}
+                        {selectedItem.type === 'vc' && <motion.h5 className="selected-card-consumption">Потребление: <span>{selectedItem.consumption}W</span></motion.h5>}
+                        <motion.h5 className='selected-card-price'>Цена: <span>{selectedItem.price} bit</span></motion.h5>
                         <BuyButton selectedItem={selectedItem} socketRef={socketRef} setBalance={setBalance} />
                      </motion.div>
                   </ClickAwayListener>

@@ -28,8 +28,6 @@ const LoadLineChart = ({ socketRef }) => {
          socket.emit('get_load_chart', { userId });
 
          socket.once('load_chart', (data) => {
-            console.log(data);
-
             setLoad(data.load);
             setMaxLoad(data.max_load);
          });

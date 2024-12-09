@@ -17,9 +17,7 @@ const Home = ({ socketRef }) => {
    const { t } = useTranslation();
    const socket = socketRef.current;
 
-   // const userId = 1;
    const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-   console.log(userId);
 
    useEffect(() => {
       if (socket) {
@@ -29,8 +27,7 @@ const Home = ({ socketRef }) => {
             setDataVCS(data.vcs || null);
             setDataPSU(data.psus || null);
 
-            console.log(dataPSU);
-            console.log(dataVCS);
+            console.log(data);
          });
       }
 
